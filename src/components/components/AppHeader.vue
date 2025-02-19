@@ -1,0 +1,524 @@
+<script setup>
+import * as Icon from "@/assets/images/icon/config.js";
+import { ref, computed, getCurrentInstance } from "vue";
+const { proxy } = getCurrentInstance();
+import { useRoute } from "vue-router";
+const route = useRoute();
+import clipboard3 from "vue-clipboard3";
+const { toClipboard } = clipboard3();
+const Url = "http://localhost:5173/ViteDemo";
+
+const menu = ref([
+  {
+    name: "首页",
+    url: "home",
+  },
+  {
+    name: "关于我们",
+    url: "about-us",
+  },
+  {
+    name: "产品",
+    url: "products",
+    child: [
+      {
+        name: "单张纸胶印油墨",
+        url: "product-detail",
+        id: "1",
+      },
+      {
+        name: "UV油墨",
+        url: "product-detail",
+        id: "2",
+      },
+      {
+        name: "印铁油墨",
+        url: "product-detail",
+        id: "3",
+      },
+    ],
+  },
+  {
+    name: "新闻中心",
+    url: "news",
+  },
+  {
+    name: "联系我们",
+    url: "contact-us",
+  },
+]);
+const activeMenu = computed(() => {
+  return route.matched[0] ? route.matched[0].name : "";
+});
+const showMenu = ref(false);
+const clickMenu = ref("");
+
+function toPage(item, isDialog) {
+  if (isDialog && item.child && item.child.length) {
+    changeMenu(item.url);
+    return;
+  }
+  if (isDialog) {
+    showMenu.value = false;
+  }
+
+  if (item.id && item.id !== null) {
+    proxy.$router.push({
+      name: item.url,
+      query: { id: item.id },
+    });
+  } else {
+    proxy.$router.push({
+      name: item.url,
+    });
+  }
+}
+async function toCopy() {
+  try {
+    await toClipboard(Url);
+    showSuccessToast("复制成功");
+  } catch (e) {
+    showFailToast("复制失败");
+    console.log(e);
+  }
+}
+function openMenuDialog() {
+  showMenu.value = true;
+}
+function closeDialog() {
+  showMenu.value = false;
+}
+function changeMenu(url) {
+  if (clickMenu.value == url) {
+    clickMenu.value = "";
+  } else {
+    clickMenu.value = url;
+  }
+  // console.log(clickMenu.value);
+}
+</script>
+
+<template>
+  <div class="app-header">
+    <div class="left">
+      <div class="logo">油</div>
+      <div class="name">
+        <div>PEONY</div>
+        <div>牡丹油墨</div>
+      </div>
+    </div>
+    <div class="center">
+      <div
+        class="menu cursor"
+        :class="{ active: v.url === activeMenu, pl: v.child && v.child.length }"
+        v-for="(v, k) in menu"
+        :key="k"
+        @click="toPage(v, false)"
+      >
+        <div class="menu-name">{{ v.name }}</div>
+
+        <div
+          class="triangle"
+          :class="v.url === activeMenu ? 'active' : ''"
+          v-if="v.child && v.child.length"
+        ></div>
+        <div class="sub-menu-wrap" v-if="v.child && v.child.length">
+          <div
+            class="sub-menu cursor"
+            :class="
+              item.url === route.name && item.id && item.id === route.query.id
+                ? 'active'
+                : ''
+            "
+            v-for="(item, index) in v.child"
+            :key="index"
+            @click.stop="toPage(item, false)"
+          >
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
+      <div class="menu-box cursor" @click="openMenuDialog">
+        <img :src="Icon.menu" alt="" class="menu-img" />
+      </div>
+    </div>
+    <div class="right">
+      <div class="share mb10 mt15">
+        <img :src="Icon.weibo" alt="" class="icon-img" title="新浪微博" />
+        <img :src="Icon.wechat" alt="" class="icon-img" title="微信" />
+        <img :src="Icon.QQ" alt="" class="icon-img" title="qq" />
+        <img
+          :src="Icon.link"
+          alt=""
+          class="icon-img"
+          style="margin-right: 0"
+          title="复制链接"
+          @click="toCopy"
+        />
+      </div>
+      <div class="language cursor">
+        <img
+          :src="Icon.language"
+          alt=""
+          class="icon-img"
+          style="margin-right: 8px"
+        />
+        <span class="text">Language</span>
+      </div>
+    </div>
+  </div>
+  <van-dialog
+    v-model:show="showMenu"
+    title=""
+    :show-confirm-button="false"
+    class="menu-dialog"
+  >
+    <div class="dialog-content">
+      <div class="header">
+        <img :src="Icon.close" alt="" class="close-img" @click="closeDialog" />
+      </div>
+      <div class="menu-wrap">
+        <div
+          class="menu cursor"
+          :class="{
+            active: v.url === activeMenu,
+            pl: v.child && v.child.length,
+          }"
+          v-for="(v, k) in menu"
+          :key="k"
+          @click="toPage(v, true)"
+        >
+          <div class="menu-name">{{ v.name }}</div>
+          <div class="triangle-box" v-if="v.child && v.child.length">
+            <img
+              :src="Icon.more2"
+              alt=""
+              class="triangle"
+              :class="v.url === clickMenu ? 'active' : ''"
+            />
+          </div>
+          <div
+            class="sub-menu-wrap"
+            v-if="v.child && v.child.length"
+            :class="v.url === clickMenu ? 'active' : ''"
+          >
+            <div
+              class="sub-menu cursor"
+              :class="
+                item.url === route.name && item.id && item.id === route.query.id
+                  ? 'active'
+                  : ''
+              "
+              v-for="(item, index) in v.child"
+              :key="index"
+              @click.stop="toPage(item, true)"
+            >
+              {{ item.name }}{{ item.id }}{{ route.query.id }}
+              <div class="triangle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </van-dialog>
+</template>
+
+<style lang='scss' scoped>
+$header-height: 80px;
+.app-header {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding-left: 200px;
+  padding-right: 170px;
+  z-index: 50;
+  .left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    padding: 0 10px 0 20px;
+    display: flex;
+    align-items: center;
+    .logo {
+      width: 50px;
+      height: 50px;
+      background: gold;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 50px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .name {
+      color: rgb(41, 39, 40);
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+  .center {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-right: 10px;
+    .menu {
+      position: relative;
+      padding: 0 25px;
+      height: $header-height;
+      font-weight: bold;
+      .menu-name {
+        color: #333;
+        line-height: $header-height;
+      }
+      .triangle {
+        position: absolute;
+        right: 15px;
+        top: 45%;
+        width: 6px;
+        height: 6px;
+        border-right: 1px solid #707070;
+        border-top: 1px solid #707070;
+        transform: rotate(135deg);
+        &.active {
+          border-right: 2px solid gold;
+          border-top: 2px solid gold;
+        }
+      }
+      .sub-menu-wrap {
+        z-index: 100;
+        opacity: 0;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 140px;
+        background: #fff;
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08),
+          0 2px 6px 0 rgba(0, 0, 0, 0.05);
+        .sub-menu {
+          line-height: normal;
+          font-size: 15px;
+          padding: 8px;
+          border-bottom: 1px solid rgb(234, 234, 234);
+          &.active,
+          &:hover {
+            color: gold;
+          }
+        }
+      }
+      &:hover {
+        .menu-name {
+          color: gold;
+        }
+        .triangle {
+          border-right: 2px solid gold;
+          border-top: 2px solid gold;
+        }
+        .sub-menu-wrap {
+          opacity: 1;
+          transition: opacity 0.4s ease;
+        }
+      }
+      &.active {
+        .menu-name {
+          color: gold;
+        }
+        border-bottom: 5px solid gold;
+      }
+      &.pl {
+        padding: 0 30px 0 20px;
+      }
+    }
+    .menu-box {
+      display: none;
+      background: gold;
+      border-radius: 5px;
+      width: 35px;
+      height: 35px;
+      margin-top: 22px;
+      margin-right: 15px;
+      .menu-img {
+        width: 80%;
+        padding-top: 3px;
+      }
+    }
+  }
+  .right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    // width: 170px;
+    padding: 0 20px 0 25px;
+    &::before {
+      content: "";
+      position: absolute;
+      right: 170px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 40px;
+      background: #333;
+    }
+    .share {
+      display: block;
+    }
+    .icon-img {
+      width: 20px;
+      height: 20px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+    .language {
+      display: flex;
+      justify-content: right;
+      align-items: center;
+      color: #bfbfbf;
+      .text {
+        display: block;
+      }
+    }
+  }
+}
+
+.menu-dialog {
+  .dialog-content {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    padding: 40px 0 0;
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: right;
+      padding: 10px 15px;
+      border-bottom: 1px solid rgb(245, 245, 245);
+      .close-img {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+      }
+    }
+    .menu-wrap {
+      height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+    .menu {
+      font-family: "Open Sans", sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      border-bottom: 1px solid rgb(245, 245, 245);
+      position: relative;
+      .menu-name {
+        padding: 10px 15px;
+        color: #333;
+      }
+      .sub-menu-wrap {
+        display: none;
+        font-size: 15px;
+        .sub-menu {
+          padding: 10px 10px 10px 40px;
+          font-size: 15px;
+          border-top: 1px solid rgb(245, 245, 245);
+          position: relative;
+          .triangle {
+            position: absolute;
+            left: 25px;
+            top: 17px;
+            width: 6px;
+            height: 6px;
+            border-right: 1px solid #707070;
+            border-top: 1px solid #707070;
+            transform: rotate(45deg);
+          }
+          &.active,
+          &:hover {
+            color: gold;
+            .triangle {
+              border-right: 1px solid gold;
+              border-top: 1px solid gold;
+            }
+          }
+        }
+        &.active {
+          display: block;
+        }
+      }
+      .triangle-box {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        .triangle {
+          width: 15px;
+          height: 15px;
+          transform: rotate(0deg);
+          transition: transform 0.4s ease;
+          &.active {
+            transform: rotate(180deg);
+            transition: transform 0.4s ease;
+          }
+        }
+      }
+      &.active {
+        .menu-name {
+          color: gold;
+        }
+      }
+      &:hover {
+        .menu-name {
+          color: gold;
+        }
+        .sub-menu-wrap {
+          opacity: 1;
+          transition: opacity 0.4s ease;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1040px) {
+  .app-header {
+    padding-right: 73px;
+    .right {
+      padding: 0 15px 0 20px;
+      &::before {
+        right: 70px;
+      }
+      .share {
+        display: none;
+      }
+      .language {
+        margin-top: 30px;
+        .text {
+          display: none;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 920px) {
+  .app-header {
+    .center {
+      .menu {
+        display: none;
+      }
+      .menu-box {
+        display: block;
+      }
+    }
+  }
+}
+@media screen and (max-width: 500px) {
+  .app-header {
+    padding-right: 0px;
+    .right {
+      display: none;
+    }
+  }
+}
+</style>

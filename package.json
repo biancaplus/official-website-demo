@@ -1,0 +1,35 @@
+{
+  "name": "vite-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode development",
+    "build": "vite build --mode production",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "leaflet": "^1.9.4",
+    "miment": "^0.0.9",
+    "path": "^0.12.7",
+    "pinia": "^2.1.7",
+    "vant": "^4.9.9",
+    "vue": "^3.3.4",
+    "vue-axios": "^3.5.2",
+    "vue-clipboard3": "^2.0.0",
+    "vue-router": "^4.0.13",
+    "vue3-carousel": "^0.13.0"
+  },
+  "devDependencies": {
+    "@vant/auto-import-resolver": "^1.2.1",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "eslint": "^8.53.0",
+    "eslint-plugin-vue": "^9.18.1",
+    "sass": "~1.69.5",
+    "sass-loader": "~13.3.2",
+    "unplugin-auto-import": "^0.18.6",
+    "unplugin-vue-components": "^0.25.2",
+    "vite": "^4.4.5"
+  }
+}

@@ -1,0 +1,32 @@
+.van-cell.van-field.contact-field {
+  background: rgb(250, 250, 250);
+  border: 1px solid rgb(203, 203, 203);
+  .van-field__control,
+  .van-field__control::-webkit-input-placeholder {
+    font-size: 18px;
+  }
+}
+
+.van-popup.van-popup--center.van-dialog.menu-dialog {
+  right: auto;
+  border-radius: 0;
+  top: 0;
+  bottom: 0;
+  transform: inherit;
+}
+
+.van-swipe.banner-swipe {
+  .van-swipe-item {
+    color: rgb(64, 64, 64);
+  }
+  .van-swipe__indicator--active {
+    background-color: rgb(64, 64, 64);
+  }
+  .van-swipe__indicator {
+    &:hover {
+      background-color: rgb(64, 64, 64);
+    }
+  }
+}
+
+// bootstrap
