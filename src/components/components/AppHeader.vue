@@ -22,57 +22,57 @@ function initializeMenu() {
       url: "home",
     },
     {
-      name: "关于我们",
+      name: t("about us"),
       url: "about-us",
     },
     {
-      name: "服务",
+      name: t("service"),
       url: "service",
       child: [
         {
-          name: "集中供墨系统",
+          name: t("service1"),
           url: "service-detail",
           id: "1",
         },
         {
-          name: "牡丹袋装油墨",
+          name: t("service2"),
           url: "service-detail",
           id: "2",
         },
         {
-          name: "袋装油墨供墨系统",
+          name: t("service3"),
           url: "service-detail",
           id: "3",
         },
       ],
     },
     {
-      name: "产品",
+      name: t("product"),
       url: "products",
       child: [
         {
-          name: "单张纸胶印油墨",
+          name: t("product1"),
           url: "product-detail",
           id: "1",
         },
         {
-          name: "UV油墨",
+          name: t("product2"),
           url: "product-detail",
           id: "2",
         },
         {
-          name: "轮转油墨",
+          name: t("product3"),
           url: "product-detail",
           id: "3",
         },
       ],
     },
     {
-      name: "新闻中心",
+      name: t("news center"),
       url: "news",
     },
     {
-      name: "联系我们",
+      name: t("contact us"),
       url: "contact-us",
     },
   ];
@@ -143,66 +143,7 @@ async function changeLanguage(lang) {
 
 // 监听语言切换，更新菜单文本
 watch(locale, () => {
-  menu.value = [
-    {
-      name: t("home"),
-      url: "home",
-    },
-    {
-      name: t("aboutus"),
-      url: "about-us",
-    },
-    {
-      name: t("service"),
-      url: "service",
-      child: [
-        {
-          name: "集中供墨系统",
-          url: "service-detail",
-          id: "1",
-        },
-        {
-          name: "牡丹袋装油墨",
-          url: "service-detail",
-          id: "2",
-        },
-        {
-          name: "袋装油墨供墨系统",
-          url: "service-detail",
-          id: "3",
-        },
-      ],
-    },
-    {
-      name: "产品",
-      url: "products",
-      child: [
-        {
-          name: "单张纸胶印油墨",
-          url: "product-detail",
-          id: "1",
-        },
-        {
-          name: "UV油墨",
-          url: "product-detail",
-          id: "2",
-        },
-        {
-          name: "轮转油墨",
-          url: "product-detail",
-          id: "3",
-        },
-      ],
-    },
-    {
-      name: "新闻中心",
-      url: "news",
-    },
-    {
-      name: "联系我们",
-      url: "contact-us",
-    },
-  ];
+  initializeMenu();
 });
 
 onMounted(async () => {
@@ -213,11 +154,10 @@ onMounted(async () => {
 <template>
   <div class="app-header">
     <div class="left">
-      <div class="logo">油</div>
+      <div class="logo">Logo</div>
       <div class="name">
-        <div>PEONY</div>
-        <div>牡丹油墨</div>
-        <!--        {{ $t("welcome") }}-->
+        <div>Company</div>
+        <div>公司名称</div>
       </div>
     </div>
     <div class="center">
@@ -264,7 +204,7 @@ onMounted(async () => {
           :src="Icon.link"
           alt=""
           class="icon-img icon-link"
-          title="复制链接"
+          :title="t('copy') + t('link')"
           @click="toCopy"
         />
         <img
@@ -272,7 +212,7 @@ onMounted(async () => {
           alt=""
           style="margin-right: 0"
           class="icon-img icon-language"
-          :title="locale"
+          :title="locale === 'en' ? '切换中文' : 'Switch to English'"
           @click="changeLanguage(locale === 'en' ? 'zh' : 'en')"
         />
       </div>
@@ -362,9 +302,9 @@ $header-height: 80px;
     display: flex;
     align-items: center;
     .logo {
-      width: 50px;
-      height: 50px;
-      background: gold;
+      width: 65px;
+      height: 55px;
+      background: #004098;
       border-radius: 10px;
       text-align: center;
       line-height: 50px;
@@ -390,6 +330,10 @@ $header-height: 80px;
       height: $header-height;
       font-weight: bold;
       .menu-name {
+        white-space: nowrap;
+        //position: absolute;
+        //top: 50%;
+        //transform: translateY(-50%);
         color: #333;
         line-height: $header-height;
       }
@@ -403,13 +347,14 @@ $header-height: 80px;
         border-top: 1px solid #707070;
         transform: rotate(135deg);
         &.active {
-          border-right: 2px solid gold;
-          border-top: 2px solid gold;
+          border-right: 2px solid #004098;
+          border-top: 2px solid #004098;
         }
       }
       .sub-menu-wrap {
         z-index: 600;
-        opacity: 0;
+        //opacity: 0;
+        display: none;
         position: absolute;
         top: 70px;
         left: 0;
@@ -425,28 +370,29 @@ $header-height: 80px;
           border-bottom: 1px solid rgb(234, 234, 234);
           &.active,
           &:hover {
-            color: gold;
+            color: #004098;
           }
         }
       }
       &:hover {
         .menu-name {
-          color: gold;
+          color: #004098;
         }
         .triangle {
-          border-right: 2px solid gold;
-          border-top: 2px solid gold;
+          border-right: 2px solid #004098;
+          border-top: 2px solid #004098;
         }
         .sub-menu-wrap {
-          opacity: 1;
-          transition: opacity 0.4s ease;
+          //opacity: 1;
+          display: block;
+          transition: display 0.4s ease;
         }
       }
       &.active {
         .menu-name {
-          color: gold;
+          color: #004098;
         }
-        border-bottom: 5px solid gold;
+        border-bottom: 5px solid #004098;
       }
       &.pl {
         padding: 0 30px 0 20px;
@@ -454,7 +400,7 @@ $header-height: 80px;
     }
     .menu-box {
       display: none;
-      background: gold;
+      background: #004098;
       border-radius: 5px;
       width: 35px;
       height: 35px;
@@ -564,10 +510,10 @@ $header-height: 80px;
           }
           &.active,
           &:hover {
-            color: gold;
+            color: #004098;
             .triangle {
-              border-right: 1px solid gold;
-              border-top: 1px solid gold;
+              border-right: 1px solid #004098;
+              border-top: 1px solid #004098;
             }
           }
         }
@@ -592,12 +538,12 @@ $header-height: 80px;
       }
       &.active {
         .menu-name {
-          color: gold;
+          color: #004098;
         }
       }
       &:hover {
         .menu-name {
-          color: gold;
+          color: #004098;
         }
         .sub-menu-wrap {
           opacity: 1;
@@ -631,7 +577,7 @@ $header-height: 80px;
     }
   }
 }
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 960px) {
   .app-header {
     .center {
       .menu {

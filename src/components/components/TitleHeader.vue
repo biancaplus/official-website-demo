@@ -57,7 +57,7 @@ const props = defineProps({
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 960px) {
   .title-header-wrap {
     margin-bottom: 15px;
   }

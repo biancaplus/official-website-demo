@@ -4,6 +4,8 @@ import * as Icon from "@/assets/images/icon/config.js";
 import markerIcon from "@/assets/images/icon/marker_red_sprite.png";
 
 import { watch, onMounted, onBeforeUnmount, ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const contactInfo = ref({
   name: "",
@@ -80,7 +82,7 @@ function initMap() {
     iconSize: [24, 34],
   });
 
-  marker.value = L.marker([23.4164, 116.7274], {
+  marker.value = L.marker([22.517, 113.942], {
     icon: warningIcon,
   }).addTo(map.value);
 
@@ -89,11 +91,11 @@ function initMap() {
 function setCenter(width) {
   if (width && map.value !== null) {
     if (width > 1200) {
-      map.value.panTo([23.46, 116.58]);
-    } else if (width <= 1200 && width > 920) {
-      map.value.panTo([23.46, 116.64]);
+      map.value.panTo([22.53, 113.82]);
+    } else if (width <= 1200 && width > 960) {
+      map.value.panTo([22.53, 113.83]);
     } else {
-      map.value.panTo([23.4164, 116.7274]);
+      map.value.panTo([22.517, 113.942]);
     }
   }
 }
@@ -119,20 +121,20 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="page">
-    <div class="header-title">联系我们</div>
+    <div class="header-title">{{ t("contact us") }}</div>
     <div class="contact-wrap">
       <div class="input-box">
         <van-field
           v-model="contactInfo.name"
           label=""
           required
-          placeholder="姓名*"
+          :placeholder="t('name') + '*'"
           class="contact-field mr10"
         />
         <van-field
           v-model="contactInfo.company"
           label=""
-          placeholder="公司"
+          :placeholder="t('company') + '*'"
           class="contact-field"
         />
       </div>
@@ -142,14 +144,14 @@ onBeforeUnmount(() => {
           type="digit"
           label=""
           required
-          placeholder="电话*"
+          :placeholder="t('phone') + '*'"
           class="contact-field mr10"
         />
         <van-field
           v-model="contactInfo.email"
           label=""
           required
-          placeholder="邮箱*"
+          :placeholder="t('email')"
           class="contact-field"
         />
       </div>
@@ -161,7 +163,7 @@ onBeforeUnmount(() => {
           autosize
           label=""
           type="textarea"
-          placeholder="留言*"
+          :placeholder="t('message') + '*'"
           required
           class="contact-field"
         />
@@ -172,30 +174,30 @@ onBeforeUnmount(() => {
           plain
           size="large"
           style="width: 100px"
-          >发送</van-button
+          >{{ t("submit") }}</van-button
         >
       </div>
     </div>
     <div class="info-wrap">
-      <div class="title">联系信息</div>
+      <div class="title">{{ t("contact info") }}</div>
       <div class="info-box">
         <img :src="Icon.定位" alt="" class="icon-img" />
-        <span>上海市杨树浦路2310号</span>
+        <span>{{ t("address") }}</span>
       </div>
       <div class="info-box">
         <img :src="Icon.电话" alt="" class="icon-img" />
-        <span>0086-021-23535836</span>
+        <span>0086-000-12345678</span>
       </div>
       <div class="info-box">
         <img :src="Icon.邮箱" alt="" class="icon-img" />
-        <span>Sales_peony@shhuayi.com</span>
+        <span>XXX_company@gmail.com</span>
       </div>
     </div>
     <div id="mapID" class="map-wrap"></div>
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import "@/assets/mixin.scss";
 .page {
   height: 100%;
@@ -282,7 +284,7 @@ onBeforeUnmount(() => {
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 960px) {
   .page {
     .header-title {
       display: block;

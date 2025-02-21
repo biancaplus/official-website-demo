@@ -79,14 +79,14 @@ function toDetail(id) {
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .page {
   padding: 10px 20px;
   background: #fff;
 }
 </style>
 
-<style lang='scss'>
+<style lang="scss">
 .van-list.news-list {
   .van-cell {
     padding: 20px 50px;
@@ -156,13 +156,15 @@ function toDetail(id) {
         .img-box .img {
           width: 100%;
           height: 100%;
-          transition: width 0.8s, height 0.8s;
+          transition:
+            width 0.8s,
+            height 0.8s;
         }
       }
     }
   }
 }
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 960px) {
   .van-list.news-list {
     .van-cell {
       padding: 15px;

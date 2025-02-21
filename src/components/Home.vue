@@ -1,12 +1,14 @@
 <script setup>
 import * as HomeImg from "@/assets/images/home/config.js";
 import TitleHeader from "@/components/components/TitleHeader.vue";
-import { onMounted, ref, getCurrentInstance } from "vue";
+import { onMounted, ref, getCurrentInstance, watch } from "vue";
 const { proxy } = getCurrentInstance();
 import "vue3-carousel/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import ServiceList from "./service/service-data.js";
+// import ServiceList from "./service/service-data.js";
 import miment from "miment";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 // banner
 const RefBannerSwipe = ref();
@@ -91,7 +93,32 @@ function resetCarouselConfig() {
 }
 
 // service
-const serviceList = ref(ServiceList);
+const serviceList = ref([]);
+function initializeServiceList() {
+  serviceList.value = [
+    {
+      id: 1,
+      title: t("service1"),
+      imgUrl: "service1",
+      content:
+        "集中供墨系统是基于“洁净、高效、智能”理念而研发。自动搅拌装置即使在寒冷的冬天也能保证油墨良好的流动性，节省大量生产准备时间。采用超声波传感器，实时探测扫描墨池内的分布状态，全自动补墨，可避免大用量墨区消耗油墨太快、供墨不足的问题，免去了过去频繁添加油墨的繁琐工作。",
+    },
+    {
+      id: 2,
+      title: t("service2"),
+      imgUrl: "service2",
+      content:
+        "针对性地解决铁罐包装固废污染高和使用损耗高的问题。袋装油墨使用完毕后，易处理，包装内残留墨量远远低于铁罐包装残余量。",
+    },
+    {
+      id: 3,
+      title: t("service3"),
+      imgUrl: "service3",
+      content:
+        "手持式挤墨器可随意使用到多个墨池，灵活机动，性价比高，操作简便，感应高效。采用锂电池供电，充电一次可挤2KG袋装油墨200袋。6KG供墨装置是免安装支架设计，安装简单，墨斗边注墨，无油墨拉丝干净整洁。一次可装入3包2KG油墨，6KG可以基本满足一个班次的生产需求。容器内自动充氮气可以防止油墨结皮。",
+    },
+  ];
+}
 function toServiceDetail(id) {
   proxy.$router.push({
     name: "service-detail",
@@ -238,9 +265,16 @@ function handleResize() {
   resetCarouselConfig();
 }
 
+// 监听语言切换，更新文本
+watch(locale, () => {
+  initializeServiceList();
+});
+
 onMounted(() => {
   resetCarouselConfig();
   window.addEventListener("resize", handleResize);
+
+  initializeServiceList();
 });
 </script>
 
@@ -270,7 +304,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="products-wrap mb30">
-      <title-header :title="'主要产品'"></title-header>
+      <title-header :title="t('main product')"></title-header>
       <div class="carousel-wrap">
         <Carousel v-bind="carouselConfig" class="my-carousel">
           <Slide v-for="slide in productList" :key="slide">
@@ -289,22 +323,18 @@ onMounted(() => {
     <div class="middle-banner-wrap mb30">
       <img src="@/assets/images/home/home-middle-banner-zh.jpg" alt="" />
     </div>
-    <div class="introduce-wrap mb30">
-      <div
-        class="introduce-box"
-        v-for="service in serviceList"
-        :key="service.id"
-      >
+    <div class="service-wrap mb30">
+      <div class="service-box" v-for="service in serviceList" :key="service.id">
         <title-header :title="service.title"></title-header>
         <img :src="HomeImg[service.imgUrl]" alt="" />
         <p>{{ service.content }}</p>
         <span class="p-link" @click="toServiceDetail(service.id)"
-          >查看更多 >></span
+          >{{ t("read more") }} >></span
         >
       </div>
     </div>
     <div class="aboutus-wrap mb30">
-      <title-header :title="'关于我们'"></title-header>
+      <title-header :title="t('about us')"></title-header>
       <div class="carousel-wrap">
         <Carousel v-bind="carouselConfig2" class="my-carousel">
           <Slide v-for="slide in aboutusList" :key="slide">
@@ -322,7 +352,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="news-wrap mb30">
-      <title-header :title="'新闻动态'" :type="2"></title-header>
+      <title-header :title="t('news')" :type="2"></title-header>
       <div class="news-box-wrap">
         <div class="news-box" v-for="news in newsList" :key="news.id">
           <img :src="HomeImg[news.imgUrl]" alt="" class="mb20" />
@@ -335,7 +365,7 @@ onMounted(() => {
               <p class="p-title">{{ news.title }}</p>
               <p>{{ news.subtitle }}</p>
               <span class="p-link" @click="toNewsDetail(news.id)"
-                >查看更多 ></span
+                >{{ t("read more") }} >></span
               >
             </div>
           </div>
@@ -343,7 +373,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="history-wrap mb30">
-      <title-header :title="'历史印记'"></title-header>
+      <title-header :title="t('history')"></title-header>
       <div class="carousel-wrap">
         <Carousel v-bind="carouselConfig3" class="my-carousel my-carousel1">
           <Slide v-for="slide in historyList" :key="slide">
@@ -356,9 +386,8 @@ onMounted(() => {
     </div>
     <div class="footer-wrap">
       <div class="p-text mr20">
-        Copyright © 2024 Shanghai Peony Printing Ink Co.,Ltd. | Credits
+        {{ t("copyright") }}
       </div>
-      <div class="p-text">Powered by Shanghai Peony Printing Ink Co.,Ltd.</div>
     </div>
   </div>
 </template>
@@ -408,11 +437,11 @@ onMounted(() => {
       width: 100%;
     }
   }
-  .introduce-wrap {
+  .service-wrap {
     display: flex;
     justify-content: space-between;
     padding: 0 30px;
-    .introduce-box {
+    .service-box {
       width: 32%;
       img {
         width: 100%;
@@ -466,11 +495,11 @@ onMounted(() => {
           margin-top: 0;
         }
         .p-link {
-          cursor: pointer;
           font-size: 13px;
-          color: #000;
+          color: #004098;
+          cursor: pointer;
           &:hover {
-            color: #004098;
+            text-decoration: underline;
           }
         }
         .c-box-wrap {
@@ -499,7 +528,7 @@ onMounted(() => {
   }
   .footer-wrap {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding: 30px;
     border-top: 1px solid rgb(243, 243, 243);
     .p-text {
@@ -529,9 +558,9 @@ onMounted(() => {
 
 @media screen and (max-width: 770px) {
   .page {
-    .introduce-wrap {
+    .service-wrap {
       flex-wrap: wrap;
-      .introduce-box {
+      .service-box {
         width: 100%;
         margin-bottom: 20px;
       }
