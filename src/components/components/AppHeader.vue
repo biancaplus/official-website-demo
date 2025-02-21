@@ -1,52 +1,88 @@
 <script setup>
 import * as Icon from "@/assets/images/icon/config.js";
-import { ref, computed, getCurrentInstance } from "vue";
+import { ref, computed, getCurrentInstance, onMounted, watch } from "vue";
 const { proxy } = getCurrentInstance();
 import { useRoute } from "vue-router";
 const route = useRoute();
+
+import { loadLocaleMessages } from "@/utils/language/i18n";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
+
 import clipboard3 from "vue-clipboard3";
 const { toClipboard } = clipboard3();
 const Url = "http://localhost:5173/ViteDemo";
 
-const menu = ref([
-  {
-    name: "首页",
-    url: "home",
-  },
-  {
-    name: "关于我们",
-    url: "about-us",
-  },
-  {
-    name: "产品",
-    url: "products",
-    child: [
-      {
-        name: "单张纸胶印油墨",
-        url: "product-detail",
-        id: "1",
-      },
-      {
-        name: "UV油墨",
-        url: "product-detail",
-        id: "2",
-      },
-      {
-        name: "印铁油墨",
-        url: "product-detail",
-        id: "3",
-      },
-    ],
-  },
-  {
-    name: "新闻中心",
-    url: "news",
-  },
-  {
-    name: "联系我们",
-    url: "contact-us",
-  },
-]);
+const menu = ref([]);
+// 初始化菜单
+function initializeMenu() {
+  menu.value = [
+    {
+      name: t("home"),
+      url: "home",
+    },
+    {
+      name: "关于我们",
+      url: "about-us",
+    },
+    {
+      name: "服务",
+      url: "service",
+      child: [
+        {
+          name: "集中供墨系统",
+          url: "service-detail",
+          id: "1",
+        },
+        {
+          name: "牡丹袋装油墨",
+          url: "service-detail",
+          id: "2",
+        },
+        {
+          name: "袋装油墨供墨系统",
+          url: "service-detail",
+          id: "3",
+        },
+      ],
+    },
+    {
+      name: "产品",
+      url: "products",
+      child: [
+        {
+          name: "单张纸胶印油墨",
+          url: "product-detail",
+          id: "1",
+        },
+        {
+          name: "UV油墨",
+          url: "product-detail",
+          id: "2",
+        },
+        {
+          name: "轮转油墨",
+          url: "product-detail",
+          id: "3",
+        },
+      ],
+    },
+    {
+      name: "新闻中心",
+      url: "news",
+    },
+    {
+      name: "联系我们",
+      url: "contact-us",
+    },
+  ];
+}
+// 加载语言包并初始化菜单
+async function loadLanguageAndInitializeMenu(lang) {
+  await loadLocaleMessages(lang); // 加载语言包
+  initializeMenu(); // 初始化菜单
+}
+
 const activeMenu = computed(() => {
   return route.matched[0] ? route.matched[0].name : "";
 });
@@ -76,9 +112,9 @@ function toPage(item, isDialog) {
 async function toCopy() {
   try {
     await toClipboard(Url);
-    showSuccessToast("复制成功");
+    showSuccessToast(t("copy") + t("success"));
   } catch (e) {
-    showFailToast("复制失败");
+    showFailToast(t("copy") + t("failed"));
     console.log(e);
   }
 }
@@ -96,6 +132,82 @@ function changeMenu(url) {
   }
   // console.log(clickMenu.value);
 }
+async function changeLanguage(lang) {
+  try {
+    await loadLocaleMessages(lang); // 加载语言文件
+    locale.value = lang; // 更新 locale
+  } catch (error) {
+    console.error("Failed to load language", error);
+  }
+}
+
+// 监听语言切换，更新菜单文本
+watch(locale, () => {
+  menu.value = [
+    {
+      name: t("home"),
+      url: "home",
+    },
+    {
+      name: t("aboutus"),
+      url: "about-us",
+    },
+    {
+      name: t("service"),
+      url: "service",
+      child: [
+        {
+          name: "集中供墨系统",
+          url: "service-detail",
+          id: "1",
+        },
+        {
+          name: "牡丹袋装油墨",
+          url: "service-detail",
+          id: "2",
+        },
+        {
+          name: "袋装油墨供墨系统",
+          url: "service-detail",
+          id: "3",
+        },
+      ],
+    },
+    {
+      name: "产品",
+      url: "products",
+      child: [
+        {
+          name: "单张纸胶印油墨",
+          url: "product-detail",
+          id: "1",
+        },
+        {
+          name: "UV油墨",
+          url: "product-detail",
+          id: "2",
+        },
+        {
+          name: "轮转油墨",
+          url: "product-detail",
+          id: "3",
+        },
+      ],
+    },
+    {
+      name: "新闻中心",
+      url: "news",
+    },
+    {
+      name: "联系我们",
+      url: "contact-us",
+    },
+  ];
+});
+
+onMounted(async () => {
+  await loadLanguageAndInitializeMenu(locale.value);
+});
 </script>
 
 <template>
@@ -105,6 +217,7 @@ function changeMenu(url) {
       <div class="name">
         <div>PEONY</div>
         <div>牡丹油墨</div>
+        <!--        {{ $t("welcome") }}-->
       </div>
     </div>
     <div class="center">
@@ -143,28 +256,35 @@ function changeMenu(url) {
       </div>
     </div>
     <div class="right">
-      <div class="share mb10 mt15">
-        <img :src="Icon.weibo" alt="" class="icon-img" title="新浪微博" />
-        <img :src="Icon.wechat" alt="" class="icon-img" title="微信" />
-        <img :src="Icon.QQ" alt="" class="icon-img" title="qq" />
+      <div class="share mb10">
+        <!--        <img :src="Icon.weibo" alt="" class="icon-img" title="新浪微博" />-->
+        <!--        <img :src="Icon.wechat" alt="" class="icon-img" title="微信" />-->
+        <!--        <img :src="Icon.QQ" alt="" class="icon-img" title="qq" />-->
         <img
           :src="Icon.link"
           alt=""
-          class="icon-img"
-          style="margin-right: 0"
+          class="icon-img icon-link"
           title="复制链接"
           @click="toCopy"
         />
-      </div>
-      <div class="language cursor">
         <img
-          :src="Icon.language"
+          :src="locale === 'en' ? Icon.en : Icon.zh"
           alt=""
-          class="icon-img"
-          style="margin-right: 8px"
+          style="margin-right: 0"
+          class="icon-img icon-language"
+          :title="locale"
+          @click="changeLanguage(locale === 'en' ? 'zh' : 'en')"
         />
-        <span class="text">Language</span>
       </div>
+      <!--      <div class="language cursor">-->
+      <!--        <img-->
+      <!--          :src="Icon.language"-->
+      <!--          alt=""-->
+      <!--          class="icon-img"-->
+      <!--          style="margin-right: 8px"-->
+      <!--        />-->
+      <!--        <span class="text">Language</span>-->
+      <!--      </div>-->
     </div>
   </div>
   <van-dialog
@@ -213,7 +333,7 @@ function changeMenu(url) {
               :key="index"
               @click.stop="toPage(item, true)"
             >
-              {{ item.name }}{{ item.id }}{{ route.query.id }}
+              {{ item.name }}
               <div class="triangle"></div>
             </div>
           </div>
@@ -223,15 +343,15 @@ function changeMenu(url) {
   </van-dialog>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 $header-height: 80px;
 .app-header {
   width: 100%;
   height: 100%;
   position: relative;
   padding-left: 200px;
-  padding-right: 170px;
-  z-index: 50;
+  padding-right: 100px; // 170px
+  z-index: 600;
   .left {
     position: absolute;
     left: 0;
@@ -288,14 +408,15 @@ $header-height: 80px;
         }
       }
       .sub-menu-wrap {
-        z-index: 100;
+        z-index: 600;
         opacity: 0;
         position: absolute;
         top: 70px;
         left: 0;
         width: 140px;
         background: #fff;
-        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08),
+        box-shadow:
+          0 2px 3px 0 rgba(0, 0, 0, 0.08),
           0 2px 6px 0 rgba(0, 0, 0, 0.05);
         .sub-menu {
           line-height: normal;
@@ -355,7 +476,7 @@ $header-height: 80px;
     &::before {
       content: "";
       position: absolute;
-      right: 170px;
+      right: 100px;
       top: 50%;
       transform: translateY(-50%);
       width: 1px;
@@ -364,6 +485,10 @@ $header-height: 80px;
     }
     .share {
       display: block;
+      margin-top: 30px; //15px;
+      .icon-link {
+        display: inline-block;
+      }
     }
     .icon-img {
       width: 20px;
@@ -384,6 +509,8 @@ $header-height: 80px;
 }
 
 .menu-dialog {
+  z-index: 2000;
+
   .dialog-content {
     height: 100%;
     width: 100%;
@@ -483,14 +610,17 @@ $header-height: 80px;
 
 @media screen and (max-width: 1040px) {
   .app-header {
-    padding-right: 73px;
+    padding-right: 50px;
     .right {
       padding: 0 15px 0 20px;
       &::before {
-        right: 70px;
+        right: 50px;
       }
       .share {
-        display: none;
+        //display: none;
+        .icon-link {
+          display: none;
+        }
       }
       .language {
         margin-top: 30px;

@@ -15,13 +15,15 @@ import AppHeader from "@/components/components/AppHeader.vue";
 $header-height: 80px;
 .header-wrap {
   position: absolute;
-  z-index: 100;
+  z-index: 1000;
   top: 0;
   left: 0;
   right: 0;
   height: $header-height;
   background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 2px 5px 0 rgba(0, 0, 0, 0.16),
+    0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .page-wrap {

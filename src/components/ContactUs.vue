@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
 }
 @include header-title-class;
 .contact-wrap {
-  z-index: 1000;
+  z-index: 500;
   position: absolute;
   top: 0;
   left: 100px;
@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
   }
 }
 .info-wrap {
-  z-index: 1001;
+  z-index: 520;
   position: absolute;
   top: 60px;
   left: 550px;
