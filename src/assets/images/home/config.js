@@ -1,12 +1,12 @@
 import banner1 from "./banner1.png";
 import banner2 from "./banner2.png";
 import banner3 from "./banner3.png";
-import product1 from "./product1.jpg";
-import product2 from "./product2.jpg";
-import product3 from "./product3.jpg";
-import product4 from "./product4.jpg";
-import product5 from "./product5.jpg";
-import product6 from "./product6.jpg";
+import product1 from "./product1.png";
+import product2 from "./product2.png";
+import product3 from "./product3.png";
+import product4 from "./product4.png";
+import product5 from "./product5.png";
+import product6 from "./product6.png";
 import service1 from "./service1.png";
 import service2 from "./service2.png";
 import service3 from "./service3.png";
@@ -18,14 +18,11 @@ import history5 from "./history5.jpg";
 import history6 from "./history6.jpg";
 import history7 from "./history7.jpg";
 import history8 from "./history8.jpg";
-import aboutus1 from "./aboutus1.jpg";
-import aboutus2 from "./aboutus2.jpg";
-import aboutus3 from "./aboutus3.jpg";
-import aboutus4 from "./aboutus4.jpg";
-import aboutus5 from "./aboutus5.jpg";
-import news1 from "./news1.png";
-import news2 from "./news2.png";
-import news3 from "./news3.png";
+import aboutus1 from "./aboutus1.png";
+import aboutus2 from "./aboutus2.png";
+import aboutus3 from "./aboutus3.png";
+import aboutus4 from "./aboutus4.png";
+import aboutus5 from "./aboutus5.png";
 
 export {
   banner1,
@@ -53,7 +50,4 @@ export {
   aboutus3,
   aboutus4,
   aboutus5,
-  news1,
-  news2,
-  news3,
 };

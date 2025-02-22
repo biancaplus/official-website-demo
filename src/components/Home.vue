@@ -1,15 +1,19 @@
 <script setup>
 import * as HomeImg from "@/assets/images/home/config.js";
+import * as NewsImg from "@/assets/images/news/config.js";
 import TitleHeader from "@/components/components/TitleHeader.vue";
 import { onMounted, ref, getCurrentInstance, watch } from "vue";
 const { proxy } = getCurrentInstance();
 import "vue3-carousel/carousel.css";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
-// import ServiceList from "./service/service-data.js";
 import miment from "miment";
 import { useI18n } from "vue-i18n";
-import { getNewsList } from "@/components/news/news-data.js";
 const { t, locale } = useI18n();
+
+import { getNewsList } from "@/components/news/news-data.js";
+import { getServiceList } from "@/components/service/service-data.js";
+import { getAboutusList } from "@/components/aboutus/aboutus-data.js";
+import { getProductList } from "@/components/products/product-data.js";
 
 // banner
 const RefBannerSwipe = ref();
@@ -23,50 +27,7 @@ function getActiveIndex(index) {
 }
 
 // product
-const productList = ref([
-  {
-    id: 1,
-    name: "05型 快干亮光胶版油墨",
-    type: "单张纸胶印油墨",
-    url: "#",
-    imgPath: HomeImg.product1,
-  },
-  {
-    id: 2,
-    name: "PRS-XX66/N 高光不结皮胶版油墨",
-    type: "单张纸胶印油墨",
-    url: "#",
-    imgPath: HomeImg.product2,
-  },
-  {
-    id: 3,
-    name: "PSE环保型大豆油基胶版油墨",
-    type: "单张纸胶印油墨",
-    url: "#",
-    imgPath: HomeImg.product3,
-  },
-  {
-    id: 4,
-    name: "PWO型书刊轮转胶版油墨",
-    type: "轮转油墨",
-    url: "#",
-    imgPath: HomeImg.product4,
-  },
-  {
-    id: 5,
-    name: "PUV LED 紫外光固化油墨",
-    type: "UV油墨",
-    url: "#",
-    imgPath: HomeImg.product5,
-  },
-  {
-    id: 6,
-    name: "PPO型全植物油基胶印油墨",
-    type: "单张纸胶印油墨",
-    url: "#",
-    imgPath: HomeImg.product6,
-  },
-]);
+const productList = ref(getProductList(t));
 const carouselConfig = ref({
   itemsToShow: 4,
   wrapAround: true,
@@ -94,32 +55,7 @@ function resetCarouselConfig() {
 }
 
 // service
-const serviceList = ref([]);
-function initializeServiceList() {
-  serviceList.value = [
-    {
-      id: 1,
-      title: t("service1"),
-      imgUrl: "service1",
-      content:
-        "集中供墨系统是基于“洁净、高效、智能”理念而研发。自动搅拌装置即使在寒冷的冬天也能保证油墨良好的流动性，节省大量生产准备时间。采用超声波传感器，实时探测扫描墨池内的分布状态，全自动补墨，可避免大用量墨区消耗油墨太快、供墨不足的问题，免去了过去频繁添加油墨的繁琐工作。",
-    },
-    {
-      id: 2,
-      title: t("service2"),
-      imgUrl: "service2",
-      content:
-        "针对性地解决铁罐包装固废污染高和使用损耗高的问题。袋装油墨使用完毕后，易处理，包装内残留墨量远远低于铁罐包装残余量。",
-    },
-    {
-      id: 3,
-      title: t("service3"),
-      imgUrl: "service3",
-      content:
-        "手持式挤墨器可随意使用到多个墨池，灵活机动，性价比高，操作简便，感应高效。采用锂电池供电，充电一次可挤2KG袋装油墨200袋。6KG供墨装置是免安装支架设计，安装简单，墨斗边注墨，无油墨拉丝干净整洁。一次可装入3包2KG油墨，6KG可以基本满足一个班次的生产需求。容器内自动充氮气可以防止油墨结皮。",
-    },
-  ];
-}
+const serviceList = ref(getServiceList(t));
 function toServiceDetail(id) {
   proxy.$router.push({
     name: "service-detail",
@@ -130,39 +66,14 @@ function toServiceDetail(id) {
 }
 
 // aboutus
-const aboutusList = ref([
-  {
-    id: 1,
-    name: "生产基地",
-    imgPath: HomeImg.aboutus1,
-  },
-  {
-    id: 2,
-    name: "码垛机",
-    imgPath: HomeImg.aboutus2,
-  },
-  {
-    id: 3,
-    name: "布勒生产线",
-    imgPath: HomeImg.aboutus3,
-  },
-  {
-    id: 4,
-    name: "研发团队",
-    imgPath: HomeImg.aboutus4,
-  },
-  {
-    id: 5,
-    name: "UV LED 固化仪",
-    imgPath: HomeImg.aboutus5,
-  },
-]);
+const aboutusList = ref(getAboutusList(t));
 const carouselConfig2 = ref({
   autoplay: 2000,
   itemsToShow: 4,
   wrapAround: true,
   snapAlign: "start",
 });
+const RefAboutusCarousel = ref();
 
 // news
 const newsList = ref(getNewsList(t).slice(0, 3));
@@ -174,6 +85,7 @@ function toNewsDetail(id) {
     },
   });
 }
+
 // history
 const historyList = ref([
   {
@@ -235,15 +147,16 @@ function handleResize() {
 
 // 监听语言切换，更新文本
 watch(locale, () => {
-  initializeServiceList();
+  productList.value = getProductList(t);
+  serviceList.value = getServiceList(t);
+  aboutusList.value = getAboutusList(t);
   newsList.value = getNewsList(t).slice(0, 3);
+  // RefAboutusCarousel.value.restartCarousel();
 });
 
 onMounted(() => {
   resetCarouselConfig();
   window.addEventListener("resize", handleResize);
-
-  initializeServiceList();
 });
 </script>
 
@@ -278,7 +191,7 @@ onMounted(() => {
         <Carousel v-bind="carouselConfig" class="my-carousel">
           <Slide v-for="slide in productList" :key="slide">
             <div class="carousel__item bg-item">
-              <img :src="slide.imgPath" alt="" class="img" />
+              <img :src="HomeImg[slide.imgPath]" alt="" class="img" />
               <p class="p-text">{{ slide.name }}</p>
               <p class="p-text p-type">{{ slide.type }}</p>
             </div>
@@ -305,10 +218,14 @@ onMounted(() => {
     <div class="aboutus-wrap mb30">
       <title-header :title="t('about us')"></title-header>
       <div class="carousel-wrap">
-        <Carousel v-bind="carouselConfig2" class="my-carousel">
+        <Carousel
+          v-bind="carouselConfig2"
+          class="my-carousel"
+          ref="RefAboutusCarousel"
+        >
           <Slide v-for="slide in aboutusList" :key="slide">
             <div class="carousel__item bg-item2">
-              <img :src="slide.imgPath" alt="" />
+              <img :src="HomeImg[slide.imgPath]" alt="" />
               <div class="img-cover">
                 <p>{{ slide.name }}</p>
               </div>
@@ -324,7 +241,7 @@ onMounted(() => {
       <title-header :title="t('news')" :type="2"></title-header>
       <div class="news-box-wrap">
         <div class="news-box" v-for="news in newsList" :key="news.id">
-          <img :src="HomeImg[news.imgUrl]" alt="" class="mb20" />
+          <img :src="NewsImg[news.imgUrl]" alt="" class="mb20" />
           <div class="c-box-wrap">
             <div class="c-time mr20">
               <div class="p-year">{{ getYear(news.date) }}</div>
@@ -378,7 +295,6 @@ onMounted(() => {
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      // justify-content: center;
       .indicator {
         margin: 3px;
         width: 8px;
@@ -450,7 +366,6 @@ onMounted(() => {
         width: 32%;
         img {
           width: 100%;
-          height: 190px;
           overflow: hidden;
         }
         p {
@@ -566,7 +481,8 @@ onMounted(() => {
           border-color: #dedede;
           background-color: #fff;
           img {
-            width: 80%;
+            width: 100%;
+            margin-bottom: 10px;
           }
         }
         &.bg-item:hover {
