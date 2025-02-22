@@ -1,18 +1,20 @@
 <script setup>
-import { ref, getCurrentInstance } from "vue";
+import { ref, getCurrentInstance, watch } from "vue";
 const { proxy } = getCurrentInstance();
-import newsList from "./news-data.js";
+import { getNewsList } from "./news-data.js";
 import * as NewsImg from "@/assets/images/news/config.js";
 import miment from "miment";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
-defineProps({
-  msg: String,
-});
-
-const count = ref(0);
-const list = ref(newsList);
+const list = ref(getNewsList(t));
 const loading = ref(false);
 const finished = ref(false);
+
+// 监听语言切换，更新新闻列表
+watch(locale, () => {
+  list.value = getNewsList(t);
+});
 
 function onLoad() {
   // 异步更新数据
@@ -21,7 +23,7 @@ function onLoad() {
     // for (let i = 0; i < 10; i++) {
     //   list.value.push(list.value.length + 1);
     // }
-    list.value = [...list.value, ...newsList];
+    list.value = [...list.value, ...getNewsList(t)];
 
     // 加载状态结束
     loading.value = false;
@@ -54,7 +56,7 @@ function toDetail(id) {
     <van-list
       v-model:loading="loading"
       :finished="finished"
-      finished-text="没有更多了"
+      :finished-text="t('no more')"
       @load="onLoad"
       class="news-list"
     >

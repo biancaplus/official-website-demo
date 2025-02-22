@@ -23,9 +23,9 @@ import aboutus2 from "./aboutus2.jpg";
 import aboutus3 from "./aboutus3.jpg";
 import aboutus4 from "./aboutus4.jpg";
 import aboutus5 from "./aboutus5.jpg";
-import news9 from "./news9.jpg";
-import news10 from "./news10.jpg";
-import news11 from "./news11.jpg";
+import news1 from "./news1.png";
+import news2 from "./news2.png";
+import news3 from "./news3.png";
 
 export {
   banner1,
@@ -53,7 +53,7 @@ export {
   aboutus3,
   aboutus4,
   aboutus5,
-  news9,
-  news10,
-  news11,
+  news1,
+  news2,
+  news3,
 };

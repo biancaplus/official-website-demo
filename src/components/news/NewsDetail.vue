@@ -1,59 +1,43 @@
 <script setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
+import { getNewsList } from "./news-data.js";
 
-defineProps({
-  msg: String,
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
+
+const detail = computed(() => {
+  let obj = {};
+  let list = getNewsList(t);
+  list.forEach((item) => {
+    if (item.id == route.query.id) {
+      obj = item;
+    }
+  });
+
+  return obj;
 });
-
-const count = ref(0);
 </script>
 
 <template>
   <div class="page">
     <div class="detail-box">
       <div class="title-box">
-        <p class="title1">未来新型油墨</p>
+        <p class="title1">{{ detail.title }}</p>
         <p class="title2">
-          UV干膠油墨、水性油墨、超微粒子油墨、热熔油墨、气雾喷涂油墨、有机硅油墨
+          {{ detail.subtitle }}
         </p>
-        <p class="editor">作者：岁月静好</p>
+        <p class="editor">{{ t("editor") }}：岁月静好</p>
       </div>
       <div class="content">
-        <p>
-          随着科技的发展，新型油墨也开始兴起，为了满足不同用户的需求，新型油墨涉及到多种类型，包括UV干膠油墨、水性油墨、超微粒子油墨、热熔油墨、气雾喷涂油墨、有机硅油墨等。
-        </p>
-        <p>UV干膠油墨：</p>
-        <p>
-          UV干膠油墨是一种环保的油墨，它的特点是不含有VOC（挥发性有机化合物），可以在任何表面上使用，而且具有优异的耐久性，可以用于印刷电子元件、POP广告物料、金属表面等。
-        </p>
-        <p>水性油墨：</p>
-        <p>
-          水性油墨是一种高科技油墨，它的特点是不含VOC，具有优良的耐水性和耐腐蚀性，可以用于印刷纸张、塑料、木材、金属表面等。
-        </p>
-        <p>超微粒子油墨：</p>
-        <p>
-          超微粒子油墨是一种高分辨率的油墨，它的特点是印刷图案的尺寸小于50微米，可以用于印刷集成电路、微电子元件、微加工零部件等。
-        </p>
-        <p>热熔油墨：</p>
-        <p>
-          热熔油墨是一种特殊的油墨，它的特点是在印刷后可以通过加热形成一个完整的图案，可以用于印刷家电外壳、电脑外壳、手机外壳等。
-        </p>
-        <p>气雾喷涂油墨：</p>
-        <p>
-          气雾喷涂油墨是一种高效的油墨，它的特点是采用气体加速方式，可以在表面形成一个完整的图案，可以用于印刷集成电路、航天飞机外壳、工业机器外壳等。
-        </p>
-        <p>有机硅油墨：</p>
-        <p>
-          有机硅油墨是一种新型的油墨，它的特点是耐高温、耐腐蚀，可以用于印刷航天飞机外壳、工业机器外壳、电子元件及其他高要求表面印刷。
-        </p>
+        {{ detail.content }}
       </div>
     </div>
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .page {
   background: rgb(245, 245, 245);
   padding: 25px;

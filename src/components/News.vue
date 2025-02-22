@@ -3,6 +3,8 @@ import { ref, computed, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 import { useRoute } from "vue-router";
 const route = useRoute();
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const routeList = computed(() => {
   let Item = route.matched && route.matched.length ? route.matched[1] : null;
@@ -18,16 +20,16 @@ function getPageName(name) {
   let nameStr = "";
   switch (name) {
     case "news-list":
-      nameStr = "新闻列表";
+      nameStr = t("news list");
       break;
     case "news-detail":
-      nameStr = "新闻详情";
+      nameStr = t("news detail");
       break;
     case "product-list":
-      nameStr = "产品列表";
+      nameStr = t("product List");
       break;
     case "product-detail":
-      nameStr = "产品详情";
+      nameStr = t("product detail");
       break;
   }
   return nameStr;
@@ -42,11 +44,11 @@ function toPage(name) {
 <template>
   <div class="news-page">
     <div class="page-header">
-      <img src="@/assets/images/news/header-bg.jpg" alt="" class="img" />
+      <img src="@/assets/images/news/header-bg.png" alt="" class="img" />
       <div class="breadcrumb-wrap">
         <ul class="breadcrumb">
           <li class="breadcrumb-item home-item" @click="toPage('home')">
-            首页
+            {{ t("home") }}
           </li>
           <li
             class="breadcrumb-item"
@@ -63,24 +65,24 @@ function toPage(name) {
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .news-page {
   width: 100%;
   height: 100%;
-  // padding-top: 3px;
   .page-header {
     width: 100%;
-    // height: ;
     .img {
       width: 100%;
+      height: 280px;
     }
   }
   .breadcrumb-wrap {
     padding: 20px;
     .breadcrumb {
       display: flex;
-      font-size: 16px;
+      font-size: 18px;
       color: #6c757d;
+      margin-bottom: 0;
       .breadcrumb-item {
         padding: 0 5px 0 20px;
         position: relative;
@@ -104,6 +106,28 @@ function toPage(name) {
           color: #212529;
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 1040px) {
+  .news-page .page-header {
+    .img {
+      height: 220px;
+    }
+  }
+}
+@media screen and (max-width: 800px) {
+  .news-page .page-header {
+    .img {
+      height: 180px;
+    }
+  }
+}
+@media screen and (max-width: 500px) {
+  .news-page .page-header {
+    .img {
+      height: 150px;
     }
   }
 }

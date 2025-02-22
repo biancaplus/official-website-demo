@@ -4,10 +4,11 @@ import TitleHeader from "@/components/components/TitleHeader.vue";
 import { onMounted, ref, getCurrentInstance, watch } from "vue";
 const { proxy } = getCurrentInstance();
 import "vue3-carousel/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { Carousel, Slide, Navigation } from "vue3-carousel";
 // import ServiceList from "./service/service-data.js";
 import miment from "miment";
 import { useI18n } from "vue-i18n";
+import { getNewsList } from "@/components/news/news-data.js";
 const { t, locale } = useI18n();
 
 // banner
@@ -164,40 +165,7 @@ const carouselConfig2 = ref({
 });
 
 // news
-const newsList = ref([
-  {
-    id: 9,
-    title: "集团党委巡察组巡察上海制皂（集团）有限公司党委",
-    subtitle:
-      "根据集团党委统一部署，集团党委巡察组近日进驻上海制皂（集团）有限公司开展巡察工作。",
-    editor: "不问归期",
-    date: "2020-06-11",
-    imgUrl: "news9",
-    content:
-      "根据集团党委统一部署，集团党委巡察组近日进驻上海制皂（集团）有限公司开展巡察工作。根据集团党委统一部署，集团党委巡察组近日进驻上海制皂（集团）有限公司开展巡察工作。根据集团党委统一部署，集团党委巡察组近日进驻上海制皂（集团）有限公司开展巡察工作。",
-  },
-  {
-    id: 10,
-    title: "2020年长沙印博会",
-    subtitle: "牡丹油墨携手合作伙伴-湖南省印参加2020年长沙印刷产业博览会。",
-    editor: "不问归期",
-    date: "2020-08-11",
-    imgUrl: "news10",
-    content:
-      "牡丹油墨携手合作伙伴-湖南省印参加2020年长沙印刷产业博览会。牡丹油墨携手合作伙伴-湖南省印参加2020年长沙印刷产业博览会。牡丹油墨携手合作伙伴-湖南省印参加2020年长沙印刷产业博览会。牡丹油墨携手合作伙伴-湖南省印参加2020年长沙印刷产业博览会。",
-  },
-  {
-    id: 11,
-    title: "2020年全印展",
-    subtitle:
-      "2020年10月12日至16日，第八届中国国际全印展在上海新国际博览中心隆重举办。",
-    editor: "不问归期",
-    date: "2020-10-12",
-    imgUrl: "news11",
-    content:
-      "2020年10月12日至16日，第八届中国国际全印展在上海新国际博览中心隆重举办。2020年10月12日至16日，第八届中国国际全印展在上海新国际博览中心隆重举办。2020年10月12日至16日，第八届中国国际全印展在上海新国际博览中心隆重举办。2020年10月12日至16日，第八届中国国际全印展在上海新国际博览中心隆重举办。",
-  },
-]);
+const newsList = ref(getNewsList(t).slice(0, 3));
 function toNewsDetail(id) {
   proxy.$router.push({
     name: "news-detail",
@@ -268,6 +236,7 @@ function handleResize() {
 // 监听语言切换，更新文本
 watch(locale, () => {
   initializeServiceList();
+  newsList.value = getNewsList(t).slice(0, 3);
 });
 
 onMounted(() => {
