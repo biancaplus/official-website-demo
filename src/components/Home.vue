@@ -56,14 +56,6 @@ function resetCarouselConfig() {
 
 // service
 const serviceList = ref(getServiceList(t));
-function toServiceDetail(id) {
-  proxy.$router.push({
-    name: "service-detail",
-    query: {
-      id,
-    },
-  });
-}
 
 // aboutus
 const aboutusList = ref(getAboutusList(t));
@@ -77,48 +69,40 @@ const RefAboutusCarousel = ref();
 
 // news
 const newsList = ref(getNewsList(t).slice(0, 3));
-function toNewsDetail(id) {
-  proxy.$router.push({
-    name: "news-detail",
-    query: {
-      id,
-    },
-  });
-}
 
 // history
 const historyList = ref([
   {
     id: 1,
-    imgPath: HomeImg.history1,
+    imgPath: "history1",
   },
   {
     id: 2,
-    imgPath: HomeImg.history2,
+    imgPath: "history2",
   },
   {
     id: 3,
-    imgPath: HomeImg.history3,
+    imgPath: "history3",
   },
   {
     id: 4,
-    imgPath: HomeImg.history4,
+    imgPath: "history4",
   },
   {
     id: 5,
-    imgPath: HomeImg.history5,
+    imgPath: "history5",
   },
   {
     id: 6,
-    imgPath: HomeImg.history6,
+    imgPath: "history6",
   },
   {
     id: 7,
-    imgPath: HomeImg.history7,
+    imgPath: "history7",
   },
   {
     id: 8,
-    imgPath: HomeImg.history8,
+    imgPath: "history8",
   },
 ]);
 const carouselConfig3 = ref({
@@ -135,6 +119,14 @@ function getMonth(date) {
   return miment(date).format("MM-DD");
 }
 
+function toDetail(type, id) {
+  proxy.$router.push({
+    name: type + "-detail",
+    query: {
+      id,
+    },
+  });
+}
 function handleResize() {
   // 重置banner
   if (RefBannerSwipe.value) {
@@ -210,7 +202,7 @@ onMounted(() => {
         <title-header :title="service.title"></title-header>
         <img :src="HomeImg[service.imgUrl]" alt="" />
         <p>{{ service.content }}</p>
-        <span class="p-link" @click="toServiceDetail(service.id)"
+        <span class="p-link" @click="toDetail('service', service.id)"
           >{{ t("read more") }} >></span
         >
       </div>
@@ -250,7 +242,7 @@ onMounted(() => {
             <div class="c-box">
               <p class="p-title">{{ news.title }}</p>
               <p>{{ news.subtitle }}</p>
-              <span class="p-link" @click="toNewsDetail(news.id)"
+              <span class="p-link" @click="toDetail('news', news.id)"
                 >{{ t("read more") }} >></span
               >
             </div>
@@ -264,7 +256,7 @@ onMounted(() => {
         <Carousel v-bind="carouselConfig3" class="my-carousel my-carousel1">
           <Slide v-for="slide in historyList" :key="slide">
             <div class="carousel__item">
-              <img :src="slide.imgPath" alt="" />
+              <img :src="HomeImg[slide.imgPath]" alt="" />
             </div>
           </Slide>
         </Carousel>
