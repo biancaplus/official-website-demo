@@ -77,6 +77,7 @@ function initializeMenu() {
     },
   ];
 }
+const language = ref("zh");
 // 加载语言包并初始化菜单
 async function loadLanguageAndInitializeMenu(lang) {
   await loadLocaleMessages(lang); // 加载语言包
@@ -132,10 +133,10 @@ function changeMenu(url) {
   }
   // console.log(clickMenu.value);
 }
-async function changeLanguage(lang) {
+async function changeLanguage() {
   try {
-    await loadLocaleMessages(lang); // 加载语言文件
-    locale.value = lang; // 更新 locale
+    await loadLocaleMessages(language.value); // 加载语言文件
+    locale.value = language.value; // 更新 locale
   } catch (error) {
     console.error("Failed to load language", error);
   }
@@ -197,9 +198,6 @@ onMounted(async () => {
     </div>
     <div class="right">
       <div class="share mb10">
-        <!--        <img :src="Icon.weibo" alt="" class="icon-img" title="新浪微博" />-->
-        <!--        <img :src="Icon.wechat" alt="" class="icon-img" title="微信" />-->
-        <!--        <img :src="Icon.QQ" alt="" class="icon-img" title="qq" />-->
         <img
           :src="Icon.link"
           alt=""
@@ -207,24 +205,24 @@ onMounted(async () => {
           :title="t('copy') + t('link')"
           @click="toCopy"
         />
-        <img
+        <!-- <img
           :src="locale === 'en' ? Icon.en : Icon.zh"
           alt=""
           style="margin-right: 0"
           class="icon-img icon-language"
           :title="locale === 'en' ? '切换中文' : 'Switch to English'"
           @click="changeLanguage(locale === 'en' ? 'zh' : 'en')"
-        />
+        /> -->
+        <select
+          class="language-selector"
+          v-model="language"
+          @change="changeLanguage"
+        >
+          <option value="zh">中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select>
       </div>
-      <!--      <div class="language cursor">-->
-      <!--        <img-->
-      <!--          :src="Icon.language"-->
-      <!--          alt=""-->
-      <!--          class="icon-img"-->
-      <!--          style="margin-right: 8px"-->
-      <!--        />-->
-      <!--        <span class="text">Language</span>-->
-      <!--      </div>-->
     </div>
   </div>
   <van-dialog
@@ -290,7 +288,7 @@ $header-height: 80px;
   height: 100%;
   position: relative;
   padding-left: 200px;
-  padding-right: 100px; // 170px
+  padding-right: 150px;
   z-index: 600;
   .left {
     position: absolute;
@@ -331,9 +329,6 @@ $header-height: 80px;
       font-weight: bold;
       .menu-name {
         white-space: nowrap;
-        //position: absolute;
-        //top: 50%;
-        //transform: translateY(-50%);
         color: #333;
         line-height: $header-height;
       }
@@ -353,15 +348,13 @@ $header-height: 80px;
       }
       .sub-menu-wrap {
         z-index: 600;
-        //opacity: 0;
         display: none;
         position: absolute;
         top: 70px;
         left: 0;
         width: 140px;
         background: #fff;
-        box-shadow:
-          0 2px 3px 0 rgba(0, 0, 0, 0.08),
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08),
           0 2px 6px 0 rgba(0, 0, 0, 0.05);
         .sub-menu {
           line-height: normal;
@@ -383,7 +376,6 @@ $header-height: 80px;
           border-top: 2px solid #004098;
         }
         .sub-menu-wrap {
-          //opacity: 1;
           display: block;
           transition: display 0.4s ease;
         }
@@ -417,12 +409,11 @@ $header-height: 80px;
     right: 0;
     top: 0;
     bottom: 0;
-    // width: 170px;
     padding: 0 20px 0 25px;
     &::before {
       content: "";
       position: absolute;
-      right: 100px;
+      right: 150px;
       top: 50%;
       transform: translateY(-50%);
       width: 1px;
@@ -431,9 +422,16 @@ $header-height: 80px;
     }
     .share {
       display: block;
-      margin-top: 30px; //15px;
+      margin-top: 30px;
       .icon-link {
         display: inline-block;
+      }
+      .language-selector {
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        outline: none;
+        color: rgb(112, 112, 112);
       }
     }
     .icon-img {
