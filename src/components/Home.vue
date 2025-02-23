@@ -17,7 +17,7 @@ import { getProductList } from "@/components/products/product-data.js";
 
 // banner
 const RefBannerSwipe = ref();
-const images = [HomeImg.banner1, HomeImg.banner2, HomeImg.banner3];
+const images = ["banner1", "banner2", "banner3"];
 const activeIndex = ref(0);
 function swipeTo(index) {
   RefBannerSwipe.value.swipeTo(index);
@@ -28,6 +28,7 @@ function getActiveIndex(index) {
 
 // product
 const productList = ref(getProductList(t));
+const KeyProductCarousel = ref("product" + Date.now());
 const carouselConfig = ref({
   itemsToShow: 4,
   wrapAround: true,
@@ -59,13 +60,13 @@ const serviceList = ref(getServiceList(t));
 
 // aboutus
 const aboutusList = ref(getAboutusList(t));
+const KeyAboutusCarousel = ref("aboutus" + Date.now());
 const carouselConfig2 = ref({
   autoplay: 2000,
   itemsToShow: 4,
   wrapAround: true,
   snapAlign: "start",
 });
-const RefAboutusCarousel = ref();
 
 // news
 const newsList = ref(getNewsList(t).slice(0, 3));
@@ -143,7 +144,8 @@ watch(locale, () => {
   serviceList.value = getServiceList(t);
   aboutusList.value = getAboutusList(t);
   newsList.value = getNewsList(t).slice(0, 3);
-  // RefAboutusCarousel.value.restartCarousel();
+  KeyAboutusCarousel.value = "aboutus" + Date.now();
+  KeyProductCarousel.value = "product" + Date.now();
 });
 
 onMounted(() => {
@@ -164,7 +166,7 @@ onMounted(() => {
         @change="getActiveIndex"
       >
         <van-swipe-item v-for="image in images" :key="image">
-          <img :src="image" class="banner-img" />
+          <img :src="HomeImg[image]" class="banner-img" />
         </van-swipe-item>
       </van-swipe>
       <div class="indicator-wrap">
@@ -180,7 +182,11 @@ onMounted(() => {
     <div class="products-wrap mb30">
       <title-header :title="t('main product')"></title-header>
       <div class="carousel-wrap">
-        <Carousel v-bind="carouselConfig" class="my-carousel">
+        <Carousel
+          v-bind="carouselConfig"
+          class="my-carousel"
+          :key="KeyProductCarousel"
+        >
           <Slide v-for="slide in productList" :key="slide">
             <div class="carousel__item bg-item">
               <img :src="HomeImg[slide.imgPath]" alt="" class="img" />
@@ -195,7 +201,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="middle-banner-wrap mb30">
-      <img src="@/assets/images/home/home-middle-banner-zh.jpg" alt="" />
+      <img src="@/assets/images/home/home-middle-banner-zh.png" alt="" />
     </div>
     <div class="service-wrap mb30">
       <div class="service-box" v-for="service in serviceList" :key="service.id">
@@ -213,7 +219,7 @@ onMounted(() => {
         <Carousel
           v-bind="carouselConfig2"
           class="my-carousel"
-          ref="RefAboutusCarousel"
+          :key="KeyAboutusCarousel"
         >
           <Slide v-for="slide in aboutusList" :key="slide">
             <div class="carousel__item bg-item2">

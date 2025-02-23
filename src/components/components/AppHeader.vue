@@ -589,12 +589,12 @@ $header-height: 80px;
     }
   }
 }
-@media screen and (max-width: 500px) {
-  .app-header {
-    padding-right: 0px;
-    .right {
-      display: none;
-    }
-  }
-}
+//@media screen and (max-width: 500px) {
+//  .app-header {
+//    padding-right: 0px;
+//    .right {
+//      display: none;
+//    }
+//  }
+//}
 </style>

@@ -3,9 +3,9 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
 import { getNewsList } from "./news-data.js";
-
+import * as NewsImg from "@/assets/images/news/config.js";
 import { useI18n } from "vue-i18n";
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const detail = computed(() => {
   let obj = {};
@@ -30,8 +30,12 @@ const detail = computed(() => {
         </p>
         <p class="editor">{{ t("editor") }}：岁月静好</p>
       </div>
-      <div class="content">
-        {{ detail.content }}
+      <div class="content-wrap">
+        <img :src="NewsImg[detail.imgUrl]" alt="" class="img" />
+        <p class="content">
+          {{ detail.content }}
+        </p>
+        <div class="clear"></div>
       </div>
     </div>
   </div>
@@ -55,7 +59,7 @@ const detail = computed(() => {
       }
       .title2 {
         color: rgba(0, 0, 0, 0.5);
-        font-size: 14px;
+        font-size: 16px;
         font-weight: normal;
         line-height: 1.5;
         padding-bottom: 20px;
@@ -66,12 +70,23 @@ const detail = computed(() => {
         text-align: right;
       }
     }
-    .content {
-      color: #666;
-      line-height: 1.8;
-      p {
+    .content-wrap {
+      width: 100%;
+      .img {
+        display: inline-block;
+        width: 250px;
+        float: left;
+        margin: 0 20px 10px 0;
+      }
+      .content {
+        color: #666;
+        line-height: 1.8;
+        font-size: 18px;
         text-indent: 2em;
         letter-spacing: 2px;
+      }
+      .clear {
+        clear: both; /* 清除浮动 */
       }
     }
   }
