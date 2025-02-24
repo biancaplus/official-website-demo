@@ -2,7 +2,7 @@
 import L from "@/utils/map/MapProvider.js";
 import * as Icon from "@/assets/images/icon/config.js";
 import markerIcon from "@/assets/images/icon/marker_red_sprite.png";
-
+import axios from "axios";
 import { watch, onMounted, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -17,6 +17,26 @@ const contactInfo = ref({
 const map = ref(null);
 const marker = ref(null);
 const devicewidth = ref(0);
+
+const submit = () => {
+  axios
+    .post("http://localhost:5281/api/Contact", contactInfo.value)
+    .then((res) => {
+      //fire a toast
+      showSuccessToast(t("success"));
+      //clear the form
+      contactInfo.value = {
+        name: "",
+        phone: "",
+        email: "",
+        company: "",
+        message: "",
+      };
+    })
+    .catch((err) => {
+      showFailToast(t("failed"));
+    });
+};
 
 watch(devicewidth, (newVal) => {
   setCenter(newVal);
@@ -174,6 +194,7 @@ onBeforeUnmount(() => {
           plain
           size="large"
           style="width: 100px"
+          @click="submit"
           >{{ t("submit") }}</van-button
         >
       </div>

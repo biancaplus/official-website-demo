@@ -24,7 +24,7 @@
   >
     <image
       id="loc1"
-      xlink:href="@/assets/images/marker_red_sprite.png"
+      xlink:href="@/assets/images/icon/marker_red_sprite.png"
       preserveAspectRatio="none"
       x="0"
       y="20"
