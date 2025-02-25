@@ -10,7 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          "source ~/.bashrc"
+          "export NVM_DIR=/var/lib/caddy/.nvm"
+          "source /var/lib/caddy/.nvm/nvm.sh"
           "pnpm i"
           "npm run build"
           "rm -rf /var/www/biancademo1"
