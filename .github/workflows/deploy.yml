@@ -16,3 +16,4 @@ jobs:
           "npm run build"
           "rm -rf /var/www/biancademo1"
           "mv dist /var/www/biancademo1"
+        shell: bash
