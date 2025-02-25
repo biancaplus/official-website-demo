@@ -11,10 +11,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           "ls -la && pwd"
-          "export NVM_DIR=/var/lib/caddy/.nvm"
-          "source /var/lib/caddy/.nvm/nvm.sh"
-          "pnpm i"
-          "npm run build"
-          "rm -rf /var/www/biancademo1"
-          "mv dist /var/www/biancademo1"
         shell: bash
