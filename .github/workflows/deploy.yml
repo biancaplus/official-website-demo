@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
+          "source ~/.bashrc"
           "pnpm i"
           "npm run build"
           "rm -rf /var/www/biancademo1"
