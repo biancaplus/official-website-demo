@@ -288,7 +288,7 @@ $header-height: 80px;
   height: 100%;
   position: relative;
   padding-left: 200px;
-  padding-right: 150px;
+  padding-right: 150px; // 100px
   z-index: 600;
   .left {
     position: absolute;
@@ -413,7 +413,7 @@ $header-height: 80px;
     &::before {
       content: "";
       position: absolute;
-      right: 150px;
+      right: 150px; // 100px
       top: 50%;
       transform: translateY(-50%);
       width: 1px;
@@ -422,6 +422,7 @@ $header-height: 80px;
     }
     .share {
       display: block;
+      display: flex;
       margin-top: 30px;
       .icon-link {
         display: inline-block;
@@ -552,13 +553,19 @@ $header-height: 80px;
   }
 }
 
-@media screen and (max-width: 1040px) {
+// 1040px
+@media screen and (max-width: 1150px) {
   .app-header {
-    padding-right: 50px;
+    padding-right: 100px; //50px;
+    .center {
+      .menu {
+        padding: 0 10px;
+      }
+    }
     .right {
       padding: 0 15px 0 20px;
       &::before {
-        right: 50px;
+        right: 100px; // 50px;
       }
       .share {
         //display: none;
