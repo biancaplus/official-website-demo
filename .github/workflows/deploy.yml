@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
+          "ls -la && pwd"
           "export NVM_DIR=/var/lib/caddy/.nvm"
           "source /var/lib/caddy/.nvm/nvm.sh"
           "pnpm i"
