@@ -8,8 +8,6 @@ jobs:
     runs-on: [self-hosted]
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Show ubuntu details
-        run: lsb_release -a
       - name: Inspect files before checkout
         run: ls -la
       - name: show current directory before checkout
