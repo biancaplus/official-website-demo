@@ -501,7 +501,8 @@ onMounted(() => {
                         top: 100%;
                         left: 0;
                         right: 0;
-                        transition: top 0.5s ease;
+                        opacity: 0;
+                        transition: opacity 0.2s ease, top 0.5s ease;
 
                         p {
                             text-align: center;
@@ -516,6 +517,7 @@ onMounted(() => {
                 &.bg-item2:hover {
                     .img-cover {
                         top: 0;
+                        opacity: 1;
                     }
                 }
 
@@ -558,7 +560,7 @@ onMounted(() => {
 
     &.my-carousel1 {
         .carousel__viewport {
-            padding-top: 0;
+            padding: 0;
             .carousel__slide {
                 padding: 0;
             }
