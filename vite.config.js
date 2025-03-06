@@ -4,7 +4,6 @@ import { resolve } from 'path';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { VantResolver } from '@vant/auto-import-resolver';
-import viteImagemin from 'vite-plugin-imagemin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,11 +15,6 @@ export default defineConfig({
         }),
         Components({
             resolvers: [VantResolver()]
-        }),
-        viteImagemin({
-            webp: {
-                quality: 75 // 质量 0-100
-            }
         })
     ],
     resolve: {

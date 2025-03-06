@@ -1,6 +1,7 @@
 <script setup>
-import * as HomeImg from '@/assets/images/home/config.js';
-import * as NewsImg from '@/assets/images/news/config.js';
+import HomeImages from '@/assets/images/home/config-name.js';
+import NewsImages from '@/assets/images/news/config-name.js';
+import { getWebPImage, getOriginalImage } from '@/utils/imageUtils';
 import TitleHeader from '@/components/components/TitleHeader.vue';
 import { onMounted, ref, getCurrentInstance, watch } from 'vue';
 const { proxy } = getCurrentInstance();
@@ -177,7 +178,10 @@ onMounted(() => {
         <div class="banner-wrap mb30">
             <van-swipe class="banner-swipe" :autoplay="3000" lazy-render :show-indicators="false" ref="RefBannerSwipe" @change="getActiveIndex">
                 <van-swipe-item v-for="image in images" :key="image">
-                    <img :src="HomeImg[image]" class="banner-img" />
+                    <picture>
+                        <source :srcset="getWebPImage(HomeImages[image], 'home')" type="image/webp" />
+                        <img :src="getOriginalImage(HomeImages[image], 'home')" class="banner-img" />
+                    </picture>
                 </van-swipe-item>
             </van-swipe>
             <div class="indicator-wrap">
@@ -190,7 +194,10 @@ onMounted(() => {
                 <Carousel v-bind="carouselConfig" class="my-carousel" :key="KeyProductCarousel">
                     <Slide v-for="slide in productList" :key="slide">
                         <div class="carousel__item bg-item">
-                            <img :src="HomeImg[slide.imgPath]" alt="" class="img" />
+                            <picture>
+                                <source :srcset="getWebPImage(HomeImages[slide.imgPath], 'home')" type="image/webp" />
+                                <img :src="getOriginalImage(HomeImages[slide.imgPath], 'home')" alt="" class="img" />
+                            </picture>
                             <p class="p-text">{{ slide.name }}</p>
                             <p class="p-text p-type">{{ slide.type }}</p>
                         </div>
@@ -207,7 +214,10 @@ onMounted(() => {
         <div class="service-wrap mb30">
             <div class="service-box" v-for="service in serviceList" :key="service.id">
                 <title-header :title="service.title"></title-header>
-                <img :src="HomeImg[service.imgUrl]" alt="" />
+                <picture>
+                    <source :srcset="getWebPImage(HomeImages[service.imgUrl], 'home')" type="image/webp" />
+                    <img :src="getOriginalImage(HomeImages[service.imgUrl], 'home')" alt="" />
+                </picture>
                 <p>{{ service.content }}</p>
                 <span class="p-link" @click="toDetail('service', service.id)">{{ t('read more') }} >></span>
             </div>
@@ -218,7 +228,10 @@ onMounted(() => {
                 <Carousel v-bind="carouselConfig2" class="my-carousel" :key="KeyAboutusCarousel">
                     <Slide v-for="slide in aboutusList" :key="slide">
                         <div class="carousel__item bg-item2">
-                            <img :src="HomeImg[slide.imgPath]" alt="" />
+                            <picture>
+                                <source :srcset="getWebPImage(HomeImages[slide.imgPath], 'home')" type="image/webp" />
+                                <img :src="getOriginalImage(HomeImages[slide.imgPath], 'home')" alt="" />
+                            </picture>
                             <div class="img-cover">
                                 <p>{{ slide.name }}</p>
                             </div>
@@ -234,7 +247,10 @@ onMounted(() => {
             <title-header :title="t('news')" :type="2"></title-header>
             <div class="news-box-wrap">
                 <div class="news-box" v-for="news in newsList" :key="news.id">
-                    <img :src="NewsImg[news.imgUrl]" alt="" class="mb20" />
+                    <picture>
+                        <source :srcset="getWebPImage(NewsImages[news.imgUrl], 'news')" type="image/webp" />
+                        <img :src="getOriginalImage(NewsImages[news.imgUrl], 'news')" alt="" class="mb20" />
+                    </picture>
                     <div class="c-box-wrap">
                         <div class="c-time mr20">
                             <div class="p-year">{{ getYear(news.date) }}</div>
@@ -255,7 +271,10 @@ onMounted(() => {
                 <Carousel v-bind="carouselConfig3" class="my-carousel my-carousel1">
                     <Slide v-for="slide in historyList" :key="slide">
                         <div class="carousel__item bg-item3">
-                            <img :src="HomeImg[slide.imgPath]" alt="" />
+                            <picture>
+                                <source :srcset="getWebPImage(HomeImages[slide.imgPath], 'home')" type="image/webp" />
+                                <img :src="getOriginalImage(HomeImages[slide.imgPath], 'home')" alt="" />
+                            </picture>
                         </div>
                     </Slide>
                 </Carousel>
@@ -450,7 +469,7 @@ onMounted(() => {
     }
 }
 </style>
-<style>
+<style lang="scss">
 .my-carousel {
     .carousel__viewport {
         padding: 20px 0;
