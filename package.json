@@ -4,6 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
+        "postinstall": "npx cwebp-bin",
         "dev": "vite --mode development",
         "prebuild": "node imagemin.js",
         "build": "vite build --mode production",
