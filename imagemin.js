@@ -1,20 +1,3 @@
-// import imagemin from 'imagemin';
-// import imageminWebp from 'imagemin-webp';
-
-// (async () => {
-//     try {
-//         await imagemin(['src/assets/images/**/*.{jpg,png}'], {
-//             destination: 'src/assets/webp',
-//             plugins: [imageminWebp({ quality: 75 })],
-//             // 保持原始目录结构
-//             glob: true
-//         });
-//         console.log('Images converted to WebP');
-//     } catch (error) {
-//         console.error('Error converting images to WebP:', error);
-//     }
-// })();
-
 import imagemin from 'imagemin';
 import imageminWebp from 'imagemin-webp';
 import path from 'path';
@@ -50,9 +33,9 @@ import { globby } from 'globby';
             }
         }
 
-        console.log('\n✅ All images converted with preserved directory structure');
+        console.log('\n✅ 图片转换完成');
     } catch (error) {
-        console.error('\n❌ Conversion error:', error);
+        console.error('\n❌ 图片转换错误:', error);
         process.exit(1);
     }
 })();
