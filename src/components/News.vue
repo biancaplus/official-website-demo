@@ -84,6 +84,8 @@ function toPage(name) {
             font-size: 18px;
             color: #6c757d;
             margin-bottom: 0;
+            height: 24px;
+            line-height: 24px;
             .breadcrumb-item {
                 padding: 0 5px 0 20px;
                 position: relative;
@@ -95,7 +97,7 @@ function toPage(name) {
                     position: absolute;
                     left: 3px;
                     top: 50%;
-                    transform: translateY(-40%);
+                    transform: translateY(-50%);
                     background: url('@/assets/images/icon/next.png') no-repeat;
                     background-size: 100% 100%;
                 }
@@ -127,9 +129,28 @@ function toPage(name) {
     }
 }
 @media screen and (max-width: 500px) {
-    .news-page .page-header {
-        .img {
-            height: 150px;
+    .news-page {
+        .page-header {
+            .img {
+                height: 150px;
+            }
+        }
+        .breadcrumb-wrap .breadcrumb {
+            font-size: 16px;
+        }
+    }
+}
+@media screen and (max-width: 380px) {
+    .news-page {
+        .breadcrumb-wrap .breadcrumb {
+            font-size: 15px;
+        }
+    }
+}
+@media screen and (max-width: 350px) {
+    .news-page {
+        .breadcrumb-wrap .breadcrumb {
+            font-size: 14px;
         }
     }
 }
