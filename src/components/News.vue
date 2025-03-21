@@ -68,8 +68,10 @@ function toPage(name) {
 .news-page {
     width: 100%;
     height: 100%;
+    background: rgb(245, 245, 245);
     .page-header {
         width: 100%;
+        background: #fff;
         .img {
             width: 100%;
             height: 280px;
@@ -92,7 +94,8 @@ function toPage(name) {
                     height: 13px;
                     position: absolute;
                     left: 3px;
-                    top: 5px;
+                    top: 50%;
+                    transform: translateY(-50%);
                     background: url('@/assets/images/icon/next.png') no-repeat;
                     background-size: 100% 100%;
                 }

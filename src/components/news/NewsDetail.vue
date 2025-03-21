@@ -47,8 +47,8 @@ const detail = computed(() => {
 
 <style lang="scss" scoped>
 .page {
-    background: rgb(245, 245, 245);
     padding: 25px;
+    background: rgb(245, 245, 245);
     .detail-box {
         background: #fff;
         padding: 20px;
@@ -88,10 +88,19 @@ const detail = computed(() => {
                 font-size: 18px;
                 text-indent: 2em;
                 letter-spacing: 2px;
+                text-align: justify;
             }
             .clear {
                 clear: both; /* 清除浮动 */
             }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .page .detail-box .content-wrap {
+        .img {
+            width: 100%;
         }
     }
 }
