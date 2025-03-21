@@ -95,7 +95,7 @@ function toPage(name) {
                     position: absolute;
                     left: 3px;
                     top: 50%;
-                    transform: translateY(-50%);
+                    transform: translateY(-40%);
                     background: url('@/assets/images/icon/next.png') no-repeat;
                     background-size: 100% 100%;
                 }
