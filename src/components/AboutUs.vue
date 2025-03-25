@@ -1,13 +1,6 @@
 <script setup>
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
-
-defineProps({
-    msg: String
-});
-
-const count = ref(0);
 </script>
 
 <template>
@@ -33,45 +26,49 @@ const count = ref(0);
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/mixin.scss';
 .page {
     width: 100%;
-    height: 100%;
-    // min-height: 500px;
-    // padding: 30px 20px;
     .page-main {
-        width: 80%;
-        height: 100%;
-        padding: 30px 20px;
+        width: 100%;
+        padding: 5% 12%;
         position: relative;
-        left: 50%;
-        transform: translateX(-50%);
+        background: var(--van-background-color);
     }
 }
-@include header-title-class;
+.header-title {
+    text-align: center;
+    padding: 18px 0;
+    background-color: var(--my-background-color-2);
+    color: var(--van-text-color-3);
+    font-size: 17px;
+    font-weight: bold;
+    display: none;
+}
 .title-1 {
     font-size: 22px;
     font-weight: bold;
     .blue {
-        color: #3dc9ea;
+        color: var(--my-blue);
         margin-right: 10px;
     }
     .red {
-        color: #e74c3c;
+        color: var(--my-red);
     }
 }
 .title-2 {
     font-size: 24px;
     font-weight: bold;
-    color: #000;
+    color: var(--my-text-color-3);
+    margin-bottom: 10px;
 }
 .content {
     .p-text {
         color: #000;
         font-size: 18px;
-        color: rgba(102, 102, 102, 1);
+        color: var(--my-text-color-7);
         text-indent: 2em;
         line-height: 2.5;
+        text-align: justify;
     }
 }
 .img {
@@ -81,7 +78,7 @@ const count = ref(0);
 
 @media screen and (max-width: 1040px) {
     .page .page-main {
-        width: 90%;
+        padding: 4% 8%;
     }
 }
 
@@ -95,7 +92,7 @@ const count = ref(0);
 
 @media screen and (max-width: 800px) {
     .page .page-main {
-        width: 95%;
+        padding: 3% 6%;
     }
 }
 </style>

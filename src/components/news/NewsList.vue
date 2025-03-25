@@ -81,8 +81,8 @@ function toDetail(id) {
 
 <style lang="scss" scoped>
 .page {
-    padding: 10px 20px;
-    background: #fff;
+    padding: 20px;
+    background: var(--van-cell-background);
 }
 </style>
 
@@ -107,12 +107,12 @@ function toDetail(id) {
                     letter-spacing: 2px;
                     .time1 {
                         font-size: 20px;
-                        color: #e74c3c;
+                        color: var(--my-red);
                         margin-bottom: 10px;
                     }
                     .time2 {
                         font-size: 18px;
-                        color: #3dc9ea;
+                        color: var(--my-blue);
                     }
                 }
                 .title {
@@ -120,7 +120,7 @@ function toDetail(id) {
                     .title1 {
                         font-size: 17px;
                         font-weight: bold;
-                        color: rgb(26, 26, 26);
+                        color: var(--van-text-color);
                         margin-bottom: 10px;
                     }
                     .title2 {

@@ -1,26 +1,26 @@
-import { createApp } from "vue";
-import App from "@/App.vue";
-import axios from "./config/ajax";
-import VueAxios from "vue-axios";
-import router from "@/config/router";
-import { createPinia } from "pinia";
-import i18n from "@/utils/language/i18n.js";
+import { createApp } from 'vue';
+import App from '@/App.vue';
+import axios from './config/ajax';
+import VueAxios from 'vue-axios';
+import router from '@/config/router';
+import { createPinia } from 'pinia';
+import i18n from '@/utils/language/i18n.js';
 
-import "@/utils/map/MapProvider";
+import '@/utils/map/MapProvider';
 
-import SvgLocation from "./utils/marker/svg-location.js";
+import SvgLocation from './utils/marker/svg-location.js';
 
 // // Toast、Dialog
 // import { Toast, Dialog } from 'vant'
 // import 'vant/es/toast/style'
 // import 'vant/es/dialog/style'
 
-import "@/assets/style.scss";
-import "@/assets/vant-variables.scss";
+import '@/assets/vant-variables.scss';
+import '@/assets/style.scss';
 
 // import * as echarts from "echarts";
 
-import dataInit from "@/config/data-init.js";
+import dataInit from '@/config/data-init.js';
 
 const app = createApp(App);
 
@@ -38,9 +38,9 @@ app.config.globalProperties.dataInit = dataInit;
 // app.config.globalProperties.$echarts = echarts;
 
 // 深拷贝
-const copy = (e) => {
-  return JSON.parse(JSON.stringify(e));
+const copy = e => {
+    return JSON.parse(JSON.stringify(e));
 };
 app.config.globalProperties.$copy = copy;
 
-app.mount("#app");
+app.mount('#app');

@@ -12,7 +12,9 @@ import mail from './mail.png';
 import marker from './marker_red_sprite.png';
 import menu from './menu.png';
 import close from './close.png';
+import sun from './sun.png';
+import moon from './moon.png';
 import en from './en.png';
 import zh from './zh.png';
 
-export { link, wechat, weibo, QQ, more, moreActive, language, position, phone, mail, marker, menu, close, more2, en, zh };
+export { link, wechat, weibo, QQ, more, moreActive, language, position, phone, mail, marker, menu, close, more2, en, zh, sun, moon };

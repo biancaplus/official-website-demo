@@ -2,13 +2,15 @@
     "welcome": "欢迎",
     "home": "首页",
     "copy": "复制",
+    "light": "切换至深色模式",
+    "dark": "切换至浅色模式",
     "success": "成功",
     "failed": "失败",
     "link": "链接",
     "about us": "关于我们",
     "company culture": "企业文化",
     "production base": "生产基地",
-    "team":"研发团队",
+    "team": "研发团队",
     "robot": "机器人",
     "server": "服务器",
     "service": "服务",
@@ -68,5 +70,4 @@
     "read more": "查看更多",
     "no more": "没有更多了",
     "copyright": "版权所有 © 2024  XXX有限公司 | 致谢"
-
 }

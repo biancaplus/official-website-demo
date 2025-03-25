@@ -48,30 +48,32 @@ const detail = computed(() => {
 <style lang="scss" scoped>
 .page {
     padding: 25px;
-    background: rgb(245, 245, 245);
+    background: var(--my-background-color-2);
     .detail-box {
-        background: #fff;
+        border-radius: 5px;
+        background: var(--van-background-color);
         padding: 20px;
         .title-box {
             .title1 {
                 font-size: 24px;
-                color: rgba(34, 34, 34, 1);
+                color: var(--my-text-color-1);
                 line-height: 1;
                 font-weight: bold;
                 font-family: Arial;
                 margin-bottom: 10px;
             }
             .title2 {
-                color: rgba(0, 0, 0, 0.5);
+                color: var(--van-text-color-2);
                 font-size: 16px;
                 font-weight: normal;
                 line-height: 1.5;
                 padding-bottom: 20px;
-                border-bottom: 1px solid #e7e7e7;
+                border-bottom: 1px solid var(--van-border-color); //#e7e7e7;
             }
             .editor {
                 padding: 15px 0;
                 text-align: right;
+                color: var(--van-text-color-2);
             }
         }
         .content-wrap {
@@ -80,10 +82,10 @@ const detail = computed(() => {
                 display: inline-block;
                 width: 250px;
                 float: left;
-                margin: 0 20px 10px 0;
+                margin: 8px 20px 10px 0;
             }
             .content {
-                color: #666;
+                color: var(--van-text-color-3);
                 line-height: 1.8;
                 font-size: 18px;
                 text-indent: 2em;

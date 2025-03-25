@@ -18,7 +18,7 @@ import { getProductList } from '@/components/products/product-data.js';
 
 // banner
 const RefBannerSwipe = ref();
-const images = ['banner1', 'banner2', 'banner3'];
+const images = ['banner1_t', 'banner2_t', 'banner3_t'];
 const activeIndex = ref(0);
 function swipeTo(index) {
     RefBannerSwipe.value.swipeTo(index);
@@ -243,7 +243,7 @@ onMounted(() => {
                 </Carousel>
             </div>
         </div>
-        <div class="news-wrap mb30">
+        <div class="news-wrap mb40">
             <title-header :title="t('news')" :type="2"></title-header>
             <div class="news-box-wrap">
                 <div class="news-box" v-for="news in newsList" :key="news.id">
@@ -292,7 +292,8 @@ onMounted(() => {
 .page {
     z-index: 10;
     width: 100%;
-    height: 100%;
+    // height: 100%;
+    background: var(--van-background-color);
     .banner-wrap {
         width: 100%;
         position: relative;
@@ -351,7 +352,7 @@ onMounted(() => {
             }
             .p-link {
                 font-size: 13px;
-                color: #004098;
+                color: var(--my-theme);
                 cursor: pointer;
                 &:hover {
                     text-decoration: underline;
@@ -361,7 +362,7 @@ onMounted(() => {
     }
     .aboutus-wrap {
         padding: 40px 30px;
-        background-color: #f7f7f7;
+        background-color: var(--my-background-color-2);
     }
     .news-wrap {
         padding: 0 30px;
@@ -379,18 +380,18 @@ onMounted(() => {
                     overflow: hidden;
                 }
                 p {
-                    margin: 10px 0;
+                    // margin: 10px 0;
                     font-size: 14px;
                     color: #848484;
                 }
                 .p-title {
                     font-size: 16px;
-                    color: #000;
+                    color: var(--my-text-color-3);
                     margin-top: 0;
                 }
                 .p-link {
                     font-size: 13px;
-                    color: #004098;
+                    color: var(--my-theme);
                     cursor: pointer;
                     &:hover {
                         text-decoration: underline;
@@ -400,10 +401,11 @@ onMounted(() => {
                     display: flex;
                     .c-time {
                         padding: 10px 10px 10px 10px;
-                        background-color: #004098;
+                        background-color: var(--my-theme);
                         font-size: 16px;
                         align-self: flex-start;
                         color: #fff;
+                        opacity: 0.9;
                         .p-year {
                             font-size: 18px;
                             font-weight: 500;
@@ -424,12 +426,12 @@ onMounted(() => {
         display: flex;
         justify-content: center;
         padding: 30px;
-        border-top: 1px solid rgb(243, 243, 243);
+        border-top: 1px solid var(--my-border-color-2);
         .p-text {
             font-family: 'Open Sans', Hind;
             font-size: 15px;
             line-height: 26px;
-            color: #3a3a3a;
+            color: var(--my-text-color-5);
         }
     }
 }
@@ -488,8 +490,8 @@ onMounted(() => {
                     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
                     border-style: solid;
                     border-width: 1px 1px 1px 1px;
-                    border-color: #dedede;
-                    background-color: #fff;
+                    border-color: var(--my-border-color-3);
+                    background-color: var(--my-background-color-4);
                     img {
                         width: 100%;
                         margin-bottom: 10px;
@@ -502,7 +504,7 @@ onMounted(() => {
 
                 &.bg-item2 {
                     position: relative;
-                    border: 1px solid #dedede;
+                    border: 1px solid var(--my-border-color-3);
                     border-radius: 1px;
                     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
                     -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
@@ -515,7 +517,7 @@ onMounted(() => {
                         width: 100%;
                         height: 100%;
                         padding-top: 30px;
-                        background: rgba(255, 255, 255, 0.9);
+                        background: var(--my-background-color-5);
                         position: absolute;
                         top: 100%;
                         left: 0;
@@ -525,7 +527,7 @@ onMounted(() => {
 
                         p {
                             text-align: center;
-                            color: #848484;
+                            color: var(--my-text-color-6);
                             font-family: 'Open Sans', Hind;
                             font-size: 16px;
                             font-weight: 300;
@@ -548,7 +550,7 @@ onMounted(() => {
 
                 .p-text {
                     vertical-align: baseline;
-                    color: #888;
+                    color: var(--my-text-color-6);
                     font-family: 'Open Sans', Hind;
                     font-size: 15px;
                     font-weight: 300;
@@ -557,7 +559,7 @@ onMounted(() => {
                     padding: 0 8px;
                 }
                 .p-type {
-                    color: #004098;
+                    color: var(--my-theme);
                     margin-bottom: 10px;
                 }
             }
@@ -566,7 +568,7 @@ onMounted(() => {
 
     .carousel__prev,
     .carousel__next {
-        color: rgb(64, 84, 178);
+        color: var(--my-theme);
         width: 25px;
         height: 30px;
     }

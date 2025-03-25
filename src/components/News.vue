@@ -68,10 +68,9 @@ function toPage(name) {
 .news-page {
     width: 100%;
     height: 100%;
-    background: rgb(245, 245, 245);
     .page-header {
         width: 100%;
-        background: #fff;
+        background: var(--van-background-color);
         .img {
             width: 100%;
             height: 280px;
@@ -82,7 +81,7 @@ function toPage(name) {
         .breadcrumb {
             display: flex;
             font-size: 18px;
-            color: #6c757d;
+            color: var(--van-text-color-2); //#6c757d;
             margin-bottom: 0;
             height: 24px;
             line-height: 24px;
@@ -107,7 +106,7 @@ function toPage(name) {
                 }
                 &:nth-last-of-type(1),
                 &:hover {
-                    color: #212529;
+                    color: var(--my-text-color-2) !important;
                 }
             }
         }

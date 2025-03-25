@@ -3,9 +3,11 @@ import L from '@/utils/map/MapProvider.js';
 import * as Icon from '@/assets/images/icon/config.js';
 import markerIcon from '@/assets/images/icon/marker_red_sprite.png';
 import axios from 'axios';
-import { watch, onMounted, onBeforeUnmount, ref } from 'vue';
+import { watch, onMounted, onBeforeUnmount, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
+import { useUserStore } from '@/store/user.js';
+const userStore = useUserStore();
 
 const contactInfo = ref({
     name: '',
@@ -42,6 +44,17 @@ watch(devicewidth, newVal => {
     setCenter(newVal);
 });
 
+const currentTheme = computed(() => {
+    return userStore.theme;
+});
+const currentTileLayer = ref(null);
+watch(
+    () => currentTheme.value,
+    () => {
+        changeTileLayer();
+    }
+);
+
 function initMap() {
     map.value = new L.map('mapID', {
         center: [23.46, 116.58],
@@ -53,12 +66,21 @@ function initMap() {
         attributionControl: false
     });
 
-    L.tileLayer
-        .chinaProvider('GaoDe.Normal.Map', {
-            maxZoom: 20,
-            minZoom: 0
-        })
-        .addTo(map.value);
+    if (currentTheme.value === 'dark') {
+        // Carto
+        currentTileLayer.value = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 18,
+            minZoom: 4
+        }).addTo(map.value);
+    } else {
+        // 高德
+        currentTileLayer.value = L.tileLayer
+            .chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 20,
+                minZoom: 0
+            })
+            .addTo(map.value);
+    }
 
     // L.marker([23.422115, 116.734096])
     //   .addTo(map.value)
@@ -119,10 +141,15 @@ function setCenter(width) {
         }
     }
 }
+function changeTileLayer() {
+    clearMap();
+    initMap();
+}
 function clearMap() {
     if (map.value !== null) {
         map.value.remove();
         marker.value = null;
+        currentTileLayer.value = null;
     }
 }
 
@@ -162,15 +189,15 @@ onBeforeUnmount(() => {
         <div class="info-wrap">
             <div class="title">{{ t('contact info') }}</div>
             <div class="info-box">
-                <img :src="Icon.position" alt="" class="icon-img" />
+                <i class="fa-solid fa-location-dot icon-img"></i>
                 <span>{{ t('address') }}</span>
             </div>
             <div class="info-box">
-                <img :src="Icon.phone" alt="" class="icon-img" />
+                <i class="fa-solid fa-phone-volume icon-img"></i>
                 <span>0086-000-12345678</span>
             </div>
             <div class="info-box">
-                <img :src="Icon.mail" alt="" class="icon-img" />
+                <i class="fa-solid fa-envelope icon-img"></i>
                 <span>XXX_company@gmail.com</span>
             </div>
         </div>
@@ -179,13 +206,21 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/mixin.scss';
 .page {
     height: 100%;
     min-height: 500px;
     position: relative;
+    background: var(--my-background-color-4);
 }
-@include header-title-class;
+.header-title {
+    text-align: center;
+    padding: 18px 0;
+    background-color: var(--my-background-color-2);
+    color: var(--van-text-color-3);
+    font-size: 17px;
+    font-weight: bold;
+    display: none;
+}
 .contact-wrap {
     z-index: 500;
     position: absolute;
@@ -208,9 +243,9 @@ onBeforeUnmount(() => {
     top: 60px;
     left: 550px;
     padding: 30px 20px;
-    background: #fff;
-    -moz-box-shadow: 0px 0px 8px 2px #c7c7c7; /* 老的 Firefox */
-    box-shadow: 0px 0px 8px 2px #c7c7c7;
+    background: var(--van-background-color);
+    -moz-box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.16); /* 老的 Firefox */
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.16);
     &::before {
         position: absolute;
         top: 45px;
@@ -220,7 +255,7 @@ onBeforeUnmount(() => {
         height: 0;
         border-top: 18px solid transparent;
         border-bottom: 18px solid transparent;
-        border-right: 20px solid #fff;
+        border-right: 20px solid var(--van-background-color);
     }
     .title {
         font-size: 18px;
@@ -231,13 +266,16 @@ onBeforeUnmount(() => {
         display: flex;
         align-items: center;
         margin-bottom: 15px;
+        color: var(--my-text-color-4);
         &:nth-last-of-type(1) {
             margin-bottom: 0;
         }
         .icon-img {
             width: 28px;
             height: 28px;
+            line-height: 28px;
             margin-right: 15px;
+            text-align: center;
         }
     }
 }
@@ -267,6 +305,7 @@ onBeforeUnmount(() => {
 
 @media screen and (max-width: 960px) {
     .page {
+        height: auto;
         .header-title {
             display: block;
         }

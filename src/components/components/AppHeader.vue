@@ -4,11 +4,11 @@ import { ref, computed, getCurrentInstance, onMounted, watch } from 'vue';
 const { proxy } = getCurrentInstance();
 import { useRoute } from 'vue-router';
 const route = useRoute();
-
 import { loadLocaleMessages } from '@/utils/language/i18n';
 import { useI18n } from 'vue-i18n';
 const { t, locale } = useI18n();
-
+import { useUserStore } from '@/store/user.js';
+const userStore = useUserStore();
 import clipboard3 from 'vue-clipboard3';
 const { toClipboard } = clipboard3();
 const Url = 'https://demo1.biancaplus.net/';
@@ -90,6 +90,10 @@ const activeMenu = computed(() => {
 const showMenu = ref(false);
 const clickMenu = ref('');
 
+const currentTheme = computed(() => {
+    return userStore.theme;
+});
+
 function toPage(item, isDialog) {
     if (isDialog && item.child && item.child.length) {
         changeMenu(item.url);
@@ -119,6 +123,27 @@ async function toCopy() {
         console.log(e);
     }
 }
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const theme = savedTheme || systemTheme;
+    document.documentElement.setAttribute('data-theme', theme);
+    userStore.theme = theme;
+}
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+
+    html.setAttribute('data-theme', newTheme);
+    // document.documentElement.classList.remove(`van-doc-theme-${newTheme}`);
+    // document.documentElement.classList.add(`van-doc-theme-${newTheme}`);
+
+    localStorage.setItem('theme', newTheme);
+    userStore.theme = newTheme;
+}
+
 function openMenuDialog() {
     showMenu.value = true;
 }
@@ -148,6 +173,7 @@ watch(locale, () => {
 });
 
 onMounted(async () => {
+    initTheme();
     await loadLanguageAndInitializeMenu(locale.value);
 });
 </script>
@@ -184,15 +210,11 @@ onMounted(async () => {
         </div>
         <div class="right">
             <div class="share mb10">
-                <img :src="Icon.link" alt="" class="icon-img icon-link" :title="t('copy') + t('link')" @click="toCopy" />
-                <!-- <img
-          :src="locale === 'en' ? Icon.en : Icon.zh"
-          alt=""
-          style="margin-right: 0"
-          class="icon-img icon-language"
-          :title="locale === 'en' ? '切换中文' : 'Switch to English'"
-          @click="changeLanguage(locale === 'en' ? 'zh' : 'en')"
-        /> -->
+                <!-- 模式切换 -->
+                <img :src="currentTheme === 'dark' ? Icon.moon : Icon.sun" alt="" class="icon-img icon-theme" :title="currentTheme === 'dark' ? t('dark') : t('light')" @click="toggleTheme" />
+                <!-- 复制链接 -->
+                <!-- <img :src="Icon.link" alt="" class="icon-img icon-link" :title="t('copy') + t('link')" @click="toCopy" /> -->
+                <!-- 语言切换 -->
                 <select class="language-selector" v-model="language" @change="changeLanguage">
                     <option value="zh">中文</option>
                     <option value="en">English</option>
@@ -235,6 +257,16 @@ onMounted(async () => {
                     </div>
                 </div>
             </div>
+            <div class="tool-box">
+                <!-- 模式切换 -->
+                <img :src="currentTheme === 'dark' ? Icon.moon : Icon.sun" alt="" class="dialog-icon-img icon-theme" :title="currentTheme === 'dark' ? t('dark') : t('light')" @click="toggleTheme" />
+                <!-- 语言切换 -->
+                <select class="language-selector" v-model="language" @change="changeLanguage">
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                </select>
+            </div>
         </div>
     </van-dialog>
 </template>
@@ -258,20 +290,20 @@ $header-height: 80px;
         display: flex;
         align-items: center;
         .logo {
-            width: 65px;
+            width: 60px;
             height: 55px;
-            background: #004098;
+            background: var(--my-theme);
             border-radius: 10px;
             text-align: center;
             line-height: 50px;
             color: #fff;
-            font-size: 24px;
+            font-size: 1.35rem; //24px;
             font-weight: bold;
             margin-right: 10px;
         }
         .name {
-            color: rgb(41, 39, 40);
-            font-size: 20px;
+            color: var(--my-text-color-1);
+            font-size: 1.3rem;
             font-weight: bold;
         }
     }
@@ -287,7 +319,7 @@ $header-height: 80px;
             font-weight: bold;
             .menu-name {
                 white-space: nowrap;
-                color: #333;
+                color: var(--my-text-color-5);
                 line-height: $header-height;
             }
             .triangle {
@@ -296,12 +328,12 @@ $header-height: 80px;
                 top: 45%;
                 width: 6px;
                 height: 6px;
-                border-right: 1px solid #707070;
-                border-top: 1px solid #707070;
+                border-right: 1px solid var(--my-text-color-5);
+                border-top: 1px solid var(--my-text-color-5);
                 transform: rotate(135deg);
                 &.active {
-                    border-right: 2px solid #004098;
-                    border-top: 2px solid #004098;
+                    border-right: 2px solid var(--my-theme);
+                    border-top: 2px solid var(--my-theme);
                 }
             }
             .sub-menu-wrap {
@@ -311,26 +343,30 @@ $header-height: 80px;
                 top: 70px;
                 left: 0;
                 width: 140px;
-                background: #fff;
+                background: var(--van-cell-background);
+                color: var(--my-text-color-5);
                 box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08), 0 2px 6px 0 rgba(0, 0, 0, 0.05);
                 .sub-menu {
                     line-height: normal;
                     font-size: 15px;
                     padding: 8px;
-                    border-bottom: 1px solid rgb(234, 234, 234);
+                    border-bottom: 1px solid var(--van-cell-border-color);
+                    &:nth-last-of-type(1) {
+                        border-bottom: none;
+                    }
                     &.active,
                     &:hover {
-                        color: #004098;
+                        color: var(--my-theme);
                     }
                 }
             }
             &:hover {
                 .menu-name {
-                    color: #004098;
+                    color: var(--my-theme);
                 }
                 .triangle {
-                    border-right: 2px solid #004098;
-                    border-top: 2px solid #004098;
+                    border-right: 2px solid var(--my-theme);
+                    border-top: 2px solid var(--my-theme);
                 }
                 .sub-menu-wrap {
                     display: block;
@@ -339,9 +375,9 @@ $header-height: 80px;
             }
             &.active {
                 .menu-name {
-                    color: #004098;
+                    color: var(--my-theme);
                 }
-                border-bottom: 5px solid #004098;
+                border-bottom: 5px solid var(--my-theme);
             }
             &.pl {
                 padding: 0 30px 0 20px;
@@ -349,7 +385,7 @@ $header-height: 80px;
         }
         .menu-box {
             display: none;
-            background: #004098;
+            background: var(--my-theme);
             border-radius: 5px;
             width: 35px;
             height: 35px;
@@ -383,16 +419,9 @@ $header-height: 80px;
             // margin-top: 30px;
             height: 80px;
             align-items: center;
-            .icon-link {
+            .icon-link,
+            .icon-theme {
                 display: inline-block;
-            }
-            .language-selector {
-                border: none;
-                background: #fff;
-                font-size: 16px;
-                cursor: pointer;
-                outline: none;
-                color: rgb(112, 112, 112);
             }
         }
         .icon-img {
@@ -420,7 +449,7 @@ $header-height: 80px;
         height: 100%;
         width: 100%;
         position: relative;
-        padding: 40px 0 0;
+        padding: 40px 0;
         .header {
             position: absolute;
             top: 0;
@@ -428,7 +457,7 @@ $header-height: 80px;
             right: 0;
             text-align: right;
             padding: 10px 15px;
-            border-bottom: 1px solid rgb(245, 245, 245);
+            border-bottom: 1px solid var(--my-border-color);
             .close-img {
                 width: 15px;
                 height: 15px;
@@ -436,18 +465,18 @@ $header-height: 80px;
             }
         }
         .menu-wrap {
-            height: calc(100vh - 40px);
+            height: calc(100vh - 80px);
             overflow-y: auto;
         }
         .menu {
             font-family: 'Open Sans', sans-serif;
             font-size: 16px;
             font-weight: bold;
-            border-bottom: 1px solid rgb(245, 245, 245);
+            border-bottom: 1px solid var(--my-border-color);
             position: relative;
             .menu-name {
                 padding: 10px 15px;
-                color: #333;
+                color: var(--my-text-color-5);
             }
             .sub-menu-wrap {
                 display: none;
@@ -455,8 +484,9 @@ $header-height: 80px;
                 .sub-menu {
                     padding: 10px 10px 10px 40px;
                     font-size: 15px;
-                    border-top: 1px solid rgb(245, 245, 245);
+                    border-top: 1px solid var(--my-border-color);
                     position: relative;
+                    color: var(--my-text-color-5);
                     .triangle {
                         position: absolute;
                         left: 25px;
@@ -469,10 +499,10 @@ $header-height: 80px;
                     }
                     &.active,
                     &:hover {
-                        color: #004098;
+                        color: var(--my-theme);
                         .triangle {
-                            border-right: 1px solid #004098;
-                            border-top: 1px solid #004098;
+                            border-right: 1px solid var(--my-theme);
+                            border-top: 1px solid var(--my-theme);
                         }
                     }
                 }
@@ -497,12 +527,12 @@ $header-height: 80px;
             }
             &.active {
                 .menu-name {
-                    color: #004098;
+                    color: var(--my-theme);
                 }
             }
             &:hover {
                 .menu-name {
-                    color: #004098;
+                    color: var(--my-theme);
                 }
                 .sub-menu-wrap {
                     opacity: 1;
@@ -510,28 +540,54 @@ $header-height: 80px;
                 }
             }
         }
+        .tool-box {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            align-items: center;
+
+            .dialog-icon-img {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+        }
     }
 }
 
-// 1040px
+.language-selector {
+    border: none;
+    background: var(--van-background-color);
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    color: rgb(112, 112, 112);
+}
+
 @media screen and (max-width: 1150px) {
     .app-header {
-        padding-right: 100px; //50px;
+        padding-right: 120px; //50px;
         .center {
             .menu {
                 padding: 0 10px;
             }
         }
         .right {
-            padding: 0 15px 0 20px;
+            padding: 0 10px;
             &::before {
-                right: 100px; // 50px;
+                right: 120px;
             }
-            .share {
-                //display: none;
-                .icon-link {
-                    display: none;
-                }
+            // .share {
+            //     .icon-link,
+            //     .icon-theme {
+            //         display: none;
+            //     }
+            // }
+            .icon-img {
+                margin-right: 5px;
             }
             .language {
                 margin-top: 30px;
@@ -542,7 +598,7 @@ $header-height: 80px;
         }
     }
 }
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 990px) {
     .app-header {
         .center {
             .menu {
@@ -554,12 +610,23 @@ $header-height: 80px;
         }
     }
 }
-//@media screen and (max-width: 500px) {
-//  .app-header {
-//    padding-right: 0px;
-//    .right {
-//      display: none;
-//    }
-//  }
-//}
+@media screen and (max-width: 500px) {
+    .app-header {
+        padding-right: 0;
+        .left {
+            padding: 0 10px 0 15px;
+        }
+        .center {
+            padding-right: 0px;
+        }
+        .right {
+            display: none;
+        }
+    }
+    .menu-dialog .dialog-content {
+        .tool-box {
+            display: flex;
+        }
+    }
+}
 </style>

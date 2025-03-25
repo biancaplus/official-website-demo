@@ -23,7 +23,7 @@ const props = defineProps({
     width: 100%;
     margin-bottom: 20px;
     .title {
-        color: #848484;
+        color: var(--my-text-color-1);
         font-family: 'Open Sans', Hind;
         font-weight: 200;
         font-size: 20px;
@@ -33,20 +33,17 @@ const props = defineProps({
     .header-border {
         width: 100%;
         height: 1px;
-        background: rgb(234, 234, 234);
+        background: var(--my-border-color-2);
         .separator {
             width: 48px;
             height: 1px;
-            background: rgb(0, 64, 152);
+            background: var(--my-theme);
         }
     }
 
     &.title-header-wrap2 {
         text-align: center;
         position: relative;
-        .title {
-            color: #000;
-        }
         .header-border {
             .separator {
                 margin: 0 auto;
