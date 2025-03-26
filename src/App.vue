@@ -43,7 +43,6 @@ $header-height: 80px;
     bottom: 0;
     left: 0;
     right: 0;
-    // height: calc(var(--vh, 1vh) * 100 - $header-height);
     overflow-y: auto;
     background: var(--van-background-color);
 }

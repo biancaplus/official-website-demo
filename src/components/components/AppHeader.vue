@@ -459,7 +459,7 @@ $header-height: 80px;
             }
         }
         .menu-wrap {
-            height: calc(100vh - 80px);
+            height: calc(var(--vh, 1vh) * 100 - 80px);
             overflow-y: auto;
         }
         .menu {
