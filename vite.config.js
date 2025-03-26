@@ -11,10 +11,10 @@ export default defineConfig({
     plugins: [
         vue(),
         AutoImport({
-            resolvers: [VantResolver({ importStyle: true, importDarkTheme: true })]
+            resolvers: [VantResolver()]
         }),
         Components({
-            resolvers: [VantResolver({ importStyle: true, importDarkTheme: true })]
+            resolvers: [VantResolver()]
         })
     ],
     resolve: {

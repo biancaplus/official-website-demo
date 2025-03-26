@@ -125,10 +125,7 @@ async function toCopy() {
 }
 
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const theme = savedTheme || systemTheme;
-    document.documentElement.setAttribute('data-theme', theme);
+    const theme = document.documentElement.getAttribute('data-theme');
     userStore.theme = theme;
 }
 function toggleTheme() {
@@ -137,9 +134,6 @@ function toggleTheme() {
     const newTheme = isDark ? 'light' : 'dark';
 
     html.setAttribute('data-theme', newTheme);
-    // document.documentElement.classList.remove(`van-doc-theme-${newTheme}`);
-    // document.documentElement.classList.add(`van-doc-theme-${newTheme}`);
-
     localStorage.setItem('theme', newTheme);
     userStore.theme = newTheme;
 }
@@ -210,7 +204,7 @@ onMounted(async () => {
         </div>
         <div class="right">
             <div class="share mb10">
-                <!-- 模式切换 -->
+                <!-- 主题切换 -->
                 <img :src="currentTheme === 'dark' ? Icon.moon : Icon.sun" alt="" class="icon-img icon-theme" :title="currentTheme === 'dark' ? t('dark') : t('light')" @click="toggleTheme" />
                 <!-- 复制链接 -->
                 <!-- <img :src="Icon.link" alt="" class="icon-img icon-link" :title="t('copy') + t('link')" @click="toCopy" /> -->
@@ -223,7 +217,7 @@ onMounted(async () => {
             </div>
         </div>
     </div>
-    <van-dialog v-model:show="showMenu" title="" :show-confirm-button="false" class="menu-dialog">
+    <van-dialog v-model:show="showMenu" title="" :show-confirm-button="false" closeOnClickOverlay class="menu-dialog">
         <div class="dialog-content">
             <div class="header">
                 <img :src="Icon.close" alt="" class="close-img" @click="closeDialog" />

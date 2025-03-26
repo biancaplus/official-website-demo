@@ -15,7 +15,7 @@ import SvgLocation from './utils/marker/svg-location.js';
 // import 'vant/es/toast/style'
 // import 'vant/es/dialog/style'
 
-import '@/assets/vant-variables.scss';
+import '@/assets/variables.scss';
 import '@/assets/style.scss';
 
 // import * as echarts from "echarts";
@@ -42,5 +42,10 @@ const copy = e => {
     return JSON.parse(JSON.stringify(e));
 };
 app.config.globalProperties.$copy = copy;
+
+// 跳转后滚动条自动滚动到顶部
+router.afterEach(() => {
+    document.querySelector('.page-wrap')?.scrollTo(0, 0);
+});
 
 app.mount('#app');

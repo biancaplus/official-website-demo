@@ -1,5 +1,18 @@
 <script setup>
 import AppHeader from '@/components/components/AppHeader.vue';
+import { onMounted } from 'vue';
+
+// 修正移动端vh
+function setVhCssVar() {
+    const vh = window.innerHeight * 0.01;
+    // 创建全局变量 --vh
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+onMounted(() => {
+    setVhCssVar();
+    window.addEventListener('resize', setVhCssVar);
+});
 </script>
 
 <template>
@@ -28,8 +41,9 @@ $header-height: 80px;
     position: absolute;
     top: $header-height;
     left: 0;
-    bottom: 0;
     right: 0;
+    height: calc(var(--vh, 1vh) * 100 - $header-height);
     overflow-y: auto;
+    background: var(--van-background-color);
 }
 </style>
