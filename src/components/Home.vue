@@ -296,6 +296,7 @@ onMounted(() => {
     background: var(--van-background-color);
     .banner-wrap {
         width: 100%;
+        aspect-ratio: 135/42;
         position: relative;
         .banner-img {
             width: 100%;
