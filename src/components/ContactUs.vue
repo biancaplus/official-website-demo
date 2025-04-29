@@ -2,6 +2,7 @@
 import L from '@/utils/map/MapProvider.js';
 import * as Icon from '@/assets/images/icon/config.js';
 import markerIcon from '@/assets/images/icon/marker_red_sprite.png';
+import ShowHeaderTitle from '@/components/components/ShowHeaderTitle.vue';
 import axios from 'axios';
 import { watch, onMounted, onBeforeUnmount, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -168,7 +169,8 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="page">
-        <div class="header-title">{{ t('contact us') }}</div>
+        <!-- <div class="show-header-title">{{ t('contact us') }}</div> -->
+        <ShowHeaderTitle :title="t('contact us')" />
         <div class="contact-wrap">
             <div class="input-box">
                 <van-field v-model="contactInfo.name" label="" required :placeholder="t('name') + '*'" class="contact-field mr10" />
@@ -212,15 +214,15 @@ onBeforeUnmount(() => {
     position: relative;
     background: var(--my-background-color-4);
 }
-.header-title {
-    text-align: center;
-    padding: 18px 0;
-    background-color: var(--my-background-color-2);
-    color: var(--van-text-color-3);
-    font-size: 17px;
-    font-weight: bold;
-    display: none;
-}
+// .show-header-title {
+//     text-align: center;
+//     padding: 18px 0;
+//     background-color: var(--my-background-color-2);
+//     color: var(--van-text-color-3);
+//     font-size: 17px;
+//     font-weight: bold;
+//     display: none;
+// }
 .contact-wrap {
     z-index: 500;
     position: absolute;
@@ -306,9 +308,9 @@ onBeforeUnmount(() => {
 @media screen and (max-width: 960px) {
     .page {
         height: auto;
-        .header-title {
-            display: block;
-        }
+        // .show-header-title {
+        //     display: block;
+        // }
         .contact-wrap {
             position: relative;
             top: inherit;
