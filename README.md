@@ -1,29 +1,28 @@
-# Demo-project
+# 官网 Demo 案例
 
-官网Demo
+> _一个基于 Vite + Vue3 的官网前端应用_
 
-## Project setup
+## ✨ 核心特性
 
-```
+-   ⚡ **超快开发体验** - Vite 的即时服务器启动和热更新
+-   📱 **完全响应式** - 适配移动端/平板/桌面设备
+-   🎨 **主题系统** - 支持动态切换浅色/深色模式
+-   🌐 **国际化** - 支持多语言（i18n）
+-   🧪 **功能** - 服务/产品/关于我们/新闻/联系我们相关页面展示
+
+## 🚀 快速开始
+
+-   npm run dev
+-   pnpm dev
+
+### 前置要求
+
+-   Node.js `>=16.0.0`
+
+### 安装依赖
+
+```bash
+npm install
+# 或
 pnpm install
 ```
-
-### Compiles and hot-reloads for development
-
-```
-pnpm dev
-```
-
-### Compiles and minifies for production
-
-```
-pnpm build
-```
-
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
